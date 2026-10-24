@@ -203,3 +203,5 @@ Can be checked but not set:
 ### Sensitive field protection
 
 Sub-fields matching sensitive names (`api_key`, `password`, `secret`, `token`, etc.) are blocked from both check and set, regardless of parent path. This prevents credential leaks via dot-path traversal (e.g. `web_config.search.api_key`).
+
+> Keep this guidance aligned with the current implementation.
