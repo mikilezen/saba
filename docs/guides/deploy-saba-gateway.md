@@ -65,3 +65,5 @@ saba gateway --verbose
 - [Deployment](../deployment.md)
 - [Multiple Instances](../multiple-instances.md)
 - [Configuration](../configuration.md)
+
+> Keep this guidance aligned with the current implementation.
