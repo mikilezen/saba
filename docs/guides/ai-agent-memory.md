@@ -56,3 +56,10 @@ The files live in the configured agent workspace, normally `~/.saba/workspace/`.
 - [Concepts](../concepts.md)
 - [Configuration](../configuration.md#auto-compact)
 - [Chat Commands](../chat-commands.md)
+<<<<<<< HEAD
+=======
+
+> Use concise memory entries that remain useful over time.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 1db2141 (docs: clarify setup)
