@@ -490,3 +490,10 @@ Use the reference image. Keep the same robot and composition, change the palette
 | AIHubMix says `Incorrect model ID` | Use `model: "gpt-image-2-free"`; saba expands it to the required `openai/gpt-image-2-free` model path internally |
 | Generation times out | Try a smaller/default image size, set AIHubMix `extraBody.quality` to `"low"`, or retry later |
 | Reference image rejected | Reference image paths must be inside the workspace or saba media directory and must be valid image files |
+<<<<<<< HEAD
+=======
+
+> Check output paths before opening generated media.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> f9ae01a (docs: clarify setup)
