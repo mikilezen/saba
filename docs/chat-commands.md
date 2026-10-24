@@ -146,3 +146,10 @@ You can change the interval or disable the built-in heartbeat in `~/.saba/config
 The heartbeat job is visible in `cron(action="list")` as `heartbeat`, but it is system-managed and cannot be removed with the `cron` tool. To stop it, set `gateway.heartbeat.enabled` to `false` and restart the gateway.
 
 > **Note:** The gateway must be running (`saba gateway`) and you must have chatted with the bot at least once so it knows which channel to deliver to.
+<<<<<<< HEAD
+=======
+
+> Use help output to confirm command names for the active channel.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> c5785ed (docs: clarify setup)
