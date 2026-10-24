@@ -182,3 +182,10 @@ resp = client.chat.completions.create(
 )
 print(resp.choices[0].message.content)
 ```
+<<<<<<< HEAD
+=======
+
+> Use a compatible base URL when configuring an OpenAI-compatible service.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 0c6ec64 (docs: clarify setup)
