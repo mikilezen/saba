@@ -358,3 +358,10 @@ saba agent -m "Hello!"
 ```
 
 If these fail, use [`troubleshooting.md`](./troubleshooting.md) before debugging WebUI, chat apps, Docker, systemd, or SDK integrations.
+<<<<<<< HEAD
+=======
+
+> Run commands from the project environment to use the pinned dependencies.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 7a534bc (docs: clarify setup)
