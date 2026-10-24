@@ -54,3 +54,10 @@ Send a message through the interface you intend to use. Check that it replies, t
 - [Configuration](../configuration.md)
 - [Chat Apps](../chat-apps.md)
 - [OpenAI-Compatible API](../openai-api.md)
+<<<<<<< HEAD
+=======
+
+> Document the host operating system before deployment.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 226ed6e (docs: clarify setup)
