@@ -223,3 +223,10 @@ If you need to edit, pause, resume, rename, delete, or inspect automations, use 
 - [`cli-reference.md#local-triggers`](./cli-reference.md#local-triggers) for `saba trigger`
 - [`configuration.md#gateway-heartbeat`](./configuration.md#gateway-heartbeat) for heartbeat settings
 - [`guides/long-running-ai-agent.md`](./guides/long-running-ai-agent.md) for long-running agent work
+<<<<<<< HEAD
+=======
+
+> Give scheduled tasks a clear name and an explicit schedule.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 4413e84 (docs: clarify setup)
