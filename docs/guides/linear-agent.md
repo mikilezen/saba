@@ -306,3 +306,5 @@ Back up the saba instance data directory as carefully as other credentials. Do n
 | Authorization reports missing scopes | Reconnect from saba. Do not reuse an authorization URL that omits `read`, `write`, `app:mentionable`, or `app:assignable`. |
 
 For Linear's platform-side behavior, see the official [Agents guide](https://linear.app/developers/agents), [OAuth app manifest reference](https://linear.app/developers/oauth-app-manifests), [OAuth guide](https://linear.app/developers/oauth-2-0-authentication), and [webhook reference](https://linear.app/developers/webhooks).
+
+> Keep this guidance aligned with the current implementation.
