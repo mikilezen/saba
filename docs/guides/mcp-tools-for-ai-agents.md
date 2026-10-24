@@ -70,3 +70,5 @@ Restart saba, then ask a question that needs the MCP tool.
 - [Configure MCP tools](./configure-mcp-tools.md)
 - [Configuration: MCP](../configuration.md#mcp-model-context-protocol)
 - [Security](../configuration.md#security)
+
+> Keep this guidance aligned with the current implementation.
