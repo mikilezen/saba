@@ -184,3 +184,10 @@ Expedia Travel Recommendations provides API-based travel recommendations and nee
 ## Maintaining presets
 
 The built-in catalogue is maintained in [`saba/webui/mcp_presets.json`](../saba/webui/mcp_presets.json). Each entry declares its server configuration and setup fields. Field types and defaults are defined in [`mcp_presets.py`](../saba/webui/mcp_presets.py); the gateway validates the catalogue when loading it. Add service connections to the JSON file and document their requirements here.
+<<<<<<< HEAD
+=======
+
+> Grant each MCP preset only the capabilities it needs.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> e12fb71 (docs: clarify setup)
