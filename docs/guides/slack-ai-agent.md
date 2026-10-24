@@ -110,3 +110,10 @@ Then DM the bot again, or mention it in a channel:
 - [Configure web search](./configure-web-search.md)
 - [Long-running AI Agent](./long-running-ai-agent.md)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Limit workspace permissions to the channels the bot needs.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 602f0b0 (docs: clarify setup)
