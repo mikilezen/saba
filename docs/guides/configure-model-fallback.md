@@ -83,3 +83,10 @@ String entries in `fallbackModels` are preset names, not raw model IDs. Replace 
 - [Providers and Models](../providers.md)
 - [Provider Cookbook: Fallback Presets](../provider-cookbook.md#recipe-fallback-presets)
 - [Configuration: Model Fallbacks](../configuration.md#model-fallbacks)
+<<<<<<< HEAD
+=======
+
+> Exercise the fallback path before relying on it in production.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 5cb30ad (docs: clarify setup)
