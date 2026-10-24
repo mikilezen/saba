@@ -41,3 +41,5 @@ HTML/CSS contract tests and desktop layout checks verify scoping, color inherita
 Record results as **pass**, **fail**, or **not tested**, with before/after screenshots. If the old build does not reproduce, report that explicitly rather than attributing the absence of blur to this patch. Do not clear site data or reinstall the PWA just to obtain fresh assets; preserve user preferences and local state.
 
 If the workaround stops matching WebKit behavior, re-check the upstream sampling implementation and device results rather than increasing padding or layer sizes. The separately reported portrait `@` selection failure is not addressed here.
+
+> Keep this guidance aligned with the current implementation.
