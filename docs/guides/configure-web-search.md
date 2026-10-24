@@ -90,3 +90,10 @@ Ask a question that requires current information and inspect the tool activity i
 - [Configuration: Web Tools](../configuration.md#web-tools)
 - [Security](../configuration.md#security)
 - [WebUI](../webui.md)
+<<<<<<< HEAD
+=======
+
+> Set search limits that match the needs of the task.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 717305b (docs: clarify setup)
