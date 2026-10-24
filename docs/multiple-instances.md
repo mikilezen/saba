@@ -54,3 +54,10 @@ Interactive `agent` and `webui` commands with the same config and explicit works
 Each gateway serves `GET /health` on `gateway.host:gateway.port`, bound to `127.0.0.1` by default. It returns `200` when the WebSocket channel is disabled or running, and `503` when enabled but not running. The JSON fields are `status`, `process`, `ready`, and `websocket`; other paths return `404`.
 
 This checks process liveness and WebSocket readiness, not other chat channels, MCP servers, or model connectivity. See [CLI Reference](./cli-reference.md#gateway) for gateway management commands.
+<<<<<<< HEAD
+=======
+
+> Use separate ports and data directories for parallel instances.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> f4a94cb (docs: clarify setup)
