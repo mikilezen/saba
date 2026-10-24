@@ -65,3 +65,5 @@ curl http://127.0.0.1:8900/v1/chat/completions \
 - [Python SDK](../python-sdk.md)
 - [Configuration](../configuration.md)
 - [Deployment](../deployment.md)
+
+> Keep this guidance aligned with the current implementation.
