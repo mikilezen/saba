@@ -108,3 +108,10 @@ Send the message again after approval. Confirm that your private chat now receiv
 - [Pairing](../configuration.md#pairing)
 - [Secure local AI agent](./secure-local-ai-agent.md)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Confirm webhook reachability before testing messages.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 1383b45 (docs: clarify setup)
