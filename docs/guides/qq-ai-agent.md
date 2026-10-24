@@ -101,3 +101,10 @@ Send the message again after approval.
 - [Pairing](../configuration.md#pairing)
 - [AI Agent Memory](./ai-agent-memory.md)
 - [Configure MCP tools](./configure-mcp-tools.md)
+<<<<<<< HEAD
+=======
+
+> Check the channel connection status before troubleshooting replies.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> a9df58c (docs: clarify setup)
