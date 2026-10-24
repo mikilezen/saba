@@ -68,3 +68,5 @@ saba agent -m "Hello!"
 - [Configuration: Langfuse Observability](../configuration.md#langfuse-observability)
 - [Provider Cookbook: Langfuse Tracing](../provider-cookbook.md#recipe-langfuse-tracing)
 - [Deployment](../deployment.md)
+
+> Keep this guidance aligned with the current implementation.
