@@ -176,3 +176,5 @@ At most one poller may run per agent token. If you start a second gateway agains
 - [Pairing](../configuration.md#pairing)
 - [Official WhatsApp agent help](https://faq.whatsapp.com/1050934623978152)
 - [Secure local AI agent](./secure-local-ai-agent.md)
+
+> Keep this guidance aligned with the current implementation.
