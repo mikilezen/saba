@@ -122,3 +122,10 @@ Send the message again after approval. Confirm that your private chat now receiv
 - [AI Agent Memory](./ai-agent-memory.md)
 - [Long-running AI Agent](./long-running-ai-agent.md)
 - [Configure MCP tools](./configure-mcp-tools.md)
+<<<<<<< HEAD
+=======
+
+> Store the Telegram token in a secret manager or local environment file.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> b29b357 (docs: clarify setup)
