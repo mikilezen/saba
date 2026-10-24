@@ -233,3 +233,12 @@ What this means in daily use is simple:
 Memory should not feel like a dump. It should feel like continuity.
 
 That is what this design is trying to protect.
+<<<<<<< HEAD
+=======
+
+> Review stored memories periodically and remove stale entries.
+
+> Avoid storing secrets or tokens in long-term memory.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> bb3f6b8 (docs: clarify setup)
