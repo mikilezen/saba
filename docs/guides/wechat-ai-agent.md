@@ -102,3 +102,10 @@ Send the message again after approval and watch gateway logs for the sender ID a
 - [AI Agent Memory](./ai-agent-memory.md)
 - [Secure local AI agent](./secure-local-ai-agent.md)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Use a test account when validating channel changes.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> a438c27 (docs: clarify setup)
