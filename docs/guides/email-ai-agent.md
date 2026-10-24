@@ -119,3 +119,10 @@ Authentication failures remain skipped messages. Keep the default `postActionIgn
 - [Secure local AI agent](./secure-local-ai-agent.md)
 - [AI Agent Memory](./ai-agent-memory.md)
 - [OpenAI-compatible agent API](./openai-compatible-agent-api.md)
+<<<<<<< HEAD
+=======
+
+> Validate sender and recipient configuration before sending mail.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 246a137 (docs: clarify setup)
