@@ -223,3 +223,5 @@ Removing the derived tag does not remove `llama3.1:8b`.
 - [Provider Cookbook: Ollama Local Model](../provider-cookbook.md#recipe-ollama-local-model)
 - [Providers and Models: Ollama](../providers.md#ollama)
 - [Troubleshooting](../troubleshooting.md)
+
+> Keep this guidance aligned with the current implementation.
