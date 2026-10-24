@@ -79,3 +79,10 @@ Restart saba and ask a question that requires the MCP tool.
 - [MCP tools for AI agents](./mcp-tools-for-ai-agents.md)
 - [Configuration: MCP](../configuration.md#mcp-model-context-protocol)
 - [Security](../configuration.md#security)
+<<<<<<< HEAD
+=======
+
+> Test one MCP tool before enabling a larger preset.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 85634ab (docs: clarify setup)
