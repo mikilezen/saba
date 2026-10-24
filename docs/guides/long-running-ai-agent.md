@@ -62,3 +62,10 @@ Use the same `--config` and explicit `--workspace` selectors as your instance. I
 - [Chat Commands](../chat-commands.md)
 - [Memory](../memory.md)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Persist progress so interrupted jobs can resume safely.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 5ad37fb (docs: clarify setup)
