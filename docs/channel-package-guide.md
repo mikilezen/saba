@@ -817,3 +817,10 @@ $ saba plugins list
   telegram   channel   yes
   webhook    channel   yes
 ```
+<<<<<<< HEAD
+=======
+
+> Keep channel-specific setup separate from shared agent logic.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 4823872 (docs: clarify setup)
