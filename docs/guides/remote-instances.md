@@ -140,3 +140,10 @@ SSH authenticates the server. A read-only, fixed Python probe retrieves only Web
 Remote-connection actions require an authenticated local WebUI connection, a loopback-bound gateway, and local request origin. They are unavailable from a public/reverse-proxied administration page. Connecting requires server admin access; permission to mention saba in Linear is **not** that permission.
 
 Common errors explain whether SSH authentication, a missing config, a service account, WebUI authentication, protocol compatibility or networking failed. Key-agent refusal, unsafe key-file permissions, invalid SSH configuration and server-side port-forwarding denial have separate recovery hints. Login banners are ignored when reading the framed probe result. A failed probe is distinct from an invalid saba configuration; raw SSH output and credentials aren't displayed in error messages. If SSH works in a terminal but not in saba, check that saba was started with access to the same system SSH agent. Configurations whose WebUI secret is supplied only by a service environment, interactive SSH passwords, and remote WebUIs with a public WebSocket URL need additional setup; this flow does not silently weaken their authentication.
+<<<<<<< HEAD
+=======
+
+> Authenticate remote instances before exposing them to a network.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 22e25de (docs: clarify setup)
