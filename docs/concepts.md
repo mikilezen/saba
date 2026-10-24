@@ -201,3 +201,10 @@ Local triggers are also session-bound, but they do not have their own schedule. 
 | Chat app setup | [`chat-apps.md`](./chat-apps.md) |
 | Complete config reference | [`configuration.md`](./configuration.md) |
 | Runtime debugging | [`troubleshooting.md`](./troubleshooting.md) |
+<<<<<<< HEAD
+=======
+
+> Treat workspaces as the boundary for local file access.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 133387c (docs: clarify setup)
