@@ -52,3 +52,5 @@ Use **Channels** in the WebUI for guided setup. These guides explain the account
 | Add Langfuse tracing | [Configure Langfuse observability](./configure-langfuse-observability.md) |
 | Secure local tools | [Secure a local AI agent](./secure-local-ai-agent.md) |
 | Deploy the gateway | [Deploy saba gateway](./deploy-saba-gateway.md) |
+
+> Keep this guidance aligned with the current implementation.
