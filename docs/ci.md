@@ -25,3 +25,10 @@ Each native consumer runs the clean public installer, installed startup/assets p
 Packaged acceptance writes `packaged-update-timings.json` incrementally, including failed phases and completed scenarios. It measures environment setup, initial dependencies, fixture generation, baseline installation, each preparation/worker/verification journey, cleanup and scenario totals. Scenario totals overlap their phases and must not be added to them. Completed checkpoints are diagnostic evidence, not an overall pass.
 
 Upload only the explicit structured reports. Private acceptance logs, configuration, sessions, backups and live test environments can contain credentials and are not upload sets. Do not remove hash checks or durable production writes merely to reduce CI time. Compare wall time and raw runner-minutes separately, with the same scenario coverage and exact source/produced package identity; moving work out of daily CI does not prove that the specialized acceptance itself became faster.
+<<<<<<< HEAD
+=======
+
+> Keep automated checks focused on reproducible project commands.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> ef06673 (docs: clarify setup)
