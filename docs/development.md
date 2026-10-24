@@ -154,3 +154,10 @@ At minimum, cover:
 6. Update user-facing docs.
 
 Add the provider to [`configuration.md`](./configuration.md) where users choose `transcription.provider`, but keep implementation details in this development guide.
+<<<<<<< HEAD
+=======
+
+> Run focused tests while iterating on a single module.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> ea41e58 (docs: clarify setup)
