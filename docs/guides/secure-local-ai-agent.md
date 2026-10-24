@@ -69,3 +69,10 @@ Start with workspace restriction:
 - [Pairing](../configuration.md#pairing)
 - [Deployment](../deployment.md)
 - [Chat Apps](../chat-apps.md)
+<<<<<<< HEAD
+=======
+
+> Keep local service endpoints bound to trusted interfaces.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 723663a (docs: clarify setup)
