@@ -2679,3 +2679,10 @@ Set `agents.defaults.toolHintMaxLength` to control the truncation threshold:
 | Option | Default | Description |
 |--------|---------|-------------|
 | `agents.defaults.toolHintMaxLength` | `40` | Maximum characters for tool hint display. Range: 20–500. Higher values show more of the command or path; lower values keep hints compact. |
+<<<<<<< HEAD
+=======
+
+> Prefer environment variables for deployment-specific values.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 57c373e (docs: clarify setup)
