@@ -64,3 +64,5 @@ Keep the page open and connected, and use HTTPS or localhost. On iPhone or iPad,
 - [Quick Start](../quick-start.md)
 - [WebSocket protocol](../websocket.md)
 - [Configuration](../configuration.md)
+
+> Keep this guidance aligned with the current implementation.
