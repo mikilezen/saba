@@ -120,3 +120,10 @@ After approval, DM the bot again or mention it in a group chat:
 - [Pairing](../configuration.md#pairing)
 - [AI Agent Memory](./ai-agent-memory.md)
 - [Configure MCP tools](./configure-mcp-tools.md)
+<<<<<<< HEAD
+=======
+
+> Keep application credentials out of issue reports.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 36a0c9b (docs: clarify setup)
