@@ -1075,3 +1075,10 @@ saba gateway
 > The channel automatically reconnects to the signal-cli daemon with exponential backoff if the connection drops. Markdown in bot replies is automatically converted to Signal text styles (bold, italic, code, etc.).
 
 </details>
+<<<<<<< HEAD
+=======
+
+> Test message formatting in the target chat application.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 0b8969a (docs: clarify setup)
