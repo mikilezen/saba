@@ -73,3 +73,5 @@ saba gateway
 - [Security configuration](./configuration.md#security)
 - [Pairing](./configuration.md#pairing)
 - [Runtime self-inspection](./my-tool.md)
+
+> Keep this guidance aligned with the current implementation.
