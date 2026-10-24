@@ -88,3 +88,10 @@ Verify in the WebUI with the new preset selected. For the manual snippet above, 
 - [Provider Cookbook: Custom OpenAI-Compatible Provider](../provider-cookbook.md#recipe-custom-openai-compatible-provider)
 - [Providers: Custom OpenAI-Compatible Endpoint](../providers.md#custom-openai-compatible-endpoint)
 - [OpenAI-Compatible Agent API](./openai-compatible-agent-api.md)
+<<<<<<< HEAD
+=======
+
+> Confirm the provider supports the requested chat format.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 660f351 (docs: clarify setup)
