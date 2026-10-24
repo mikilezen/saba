@@ -1,0 +1,175 @@
+[
+  {
+    "name": "brave-search",
+    "display_name": "Brave Search",
+    "category": "web",
+    "description": "Run web, news, image, video, and local search through Brave Search.",
+    "docs_url": "https://www.npmjs.com/package/@brave/brave-search-mcp-server",
+    "transport": "stdio",
+    "install_supported": true,
+    "brand_domain": "brave.com",
+    "brand_color": "#FB542B",
+    "server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server@latest",
+        "--transport",
+        "stdio"
+      ],
+      "tool_timeout": 45
+    },
+    "fields": [
+      {
+        "name": "brave_api_key",
+        "label": "Brave Search API key",
+        "target": [
+          "env",
+          "BRAVE_API_KEY"
+        ],
+        "env_var": "BRAVE_API_KEY",
+        "placeholder": "BSA..."
+      }
+    ],
+    "requires": "Node.js, npx, and Brave Search API key"
+  },
+  {
+    "name": "github",
+    "display_name": "GitHub",
+    "category": "code",
+    "description": "Repository, issue, and pull request workflows via GitHub's MCP server.",
+    "docs_url": "https://github.com/github/github-mcp-server",
+    "transport": "stdio",
+    "install_supported": true,
+    "brand_domain": "github.com",
+    "brand_color": "#24292F",
+    "server": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "tool_timeout": 60
+    },
+    "fields": [
+      {
+        "name": "github_token",
+        "label": "GitHub token",
+        "target": [
+          "env",
+          "GITHUB_PERSONAL_ACCESS_TOKEN"
+        ],
+        "env_var": "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "placeholder": "ghp_..."
+      }
+    ],
+    "requires": "Docker and GitHub token"
+  },
+  {
+    "name": "github-remote",
+    "display_name": "GitHub (remote)",
+    "category": "code",
+    "description": "Manage repositories, issues, pull requests, and GitHub workflows.",
+    "docs_url": "https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md",
+    "transport": "streamableHttp",
+    "install_supported": true,
+    "brand_domain": "github.com",
+    "brand_color": "#5269C7",
+    "server": {
+      "type": "streamableHttp",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "tool_timeout": 60
+    },
+    "fields": [
+      {
+        "name": "github_token",
+        "label": "GitHub personal access token",
+        "target": [
+          "header",
+          "Authorization"
+        ],
+        "env_var": "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "placeholder": "Paste your token",
+        "value_prefix": "Bearer "
+      }
+    ],
+    "requires": "GitHub personal access token"
+  },
+  {
+    "name": "google-workspace",
+    "display_name": "Google Workspace",
+    "category": "productivity",
+    "description": "Work with Gmail, Drive, Calendar, Docs, Sheets, Slides, and Contacts.",
+    "docs_url": "https://github.com/taylorwilsdon/google_workspace_mcp",
+    "transport": "stdio",
+    "install_supported": true,
+    "brand_domain": "workspace.google.com",
+    "brand_color": "#5269C7",
+    "server": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "workspace-mcp",
+        "--transport",
+        "stdio",
+        "--tool-tier",
+        "core"
+      ],
+      "tool_timeout": 60
+    },
+    "fields": [
+      {
+        "name": "google_client_id",
+        "label": "Google OAuth client ID",
+        "target": [
+          "env",
+          "GOOGLE_OAUTH_CLIENT_ID"
+        ],
+        "secret": false,
+        "env_var": "GOOGLE_OAUTH_CLIENT_ID",
+        "placeholder": "your-client.apps.googleusercontent.com"
+      },
+      {
+        "name": "google_client_secret",
+        "label": "Google OAuth client secret",
+        "target": [
+          "env",
+          "GOOGLE_OAUTH_CLIENT_SECRET"
+        ],
+        "env_var": "GOOGLE_OAUTH_CLIENT_SECRET",
+        "placeholder": "Paste your client secret"
+      }
+    ],
+    "requires": "uvx and Google Cloud OAuth app with the required APIs enabled",
+    "note": "Community server by Taylor Wilsdon. Follow its setup guide and complete Google sign-in when requested."
+  },
+  {
+    "name": "microsoft-365",
+    "display_name": "Microsoft 365",
+    "category": "productivity",
+    "description": "Work with Outlook, Calendar, OneDrive, SharePoint, and Teams.",
+    "docs_url": "https://github.com/Softeria/ms-365-mcp-server",
+    "transport": "stdio",
+    "install_supported": true,
+    "brand_domain": "microsoft.com",
+    "brand_color": "#5269C7",
+    "server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@softeria/ms-365-mcp-server@latest",
+        "--org-mode"
+      ],
+      "tool_timeout": 60
+    },
+    "requires": "Node.js, npx, and Microsoft work or school account",
+    "note": "Community server by Softeria. Ask it to sign in and follow the device-code instructions; your organization may require admin consent."
+  }
+]

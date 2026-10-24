@@ -1,0 +1,37 @@
+{
+  "name": "saba",
+  "short_name": "saba",
+  "description": "saba AI assistant",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "color_scheme_dark": {
+    "background_color": "#303030",
+    "theme_color": "#303030"
+  },
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/brand/saba_apple_touch.png?v=20261024",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/saba_icon_192.png?v=20261024",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/saba_icon_512.png?v=20261024",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/saba_icon_maskable.png?v=20261024",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

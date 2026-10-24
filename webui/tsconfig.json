@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "types": ["node"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/vite",
+      "./node_modules/vitest",
+      "./node_modules/@testing-library"
+    ],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "vitest": ["./node_modules/vitest"],
+      "lucide-react": ["./node_modules/lucide-react"],
+      "react-i18next": ["./node_modules/react-i18next"],
+      "react": ["./node_modules/@types/react/index.d.ts"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "react-dom": ["./node_modules/@types/react-dom/index.d.ts"],
+      "react-dom/*": ["./node_modules/@types/react-dom/*"]
+    }
+  },
+  "include": [
+    "src",
+    "../saba/channels/*/webui/**/*.ts",
+    "../saba/channels/*/webui/**/*.tsx",
+    "../saba/channels/*/tests/webui/**/*.ts",
+    "../saba/channels/*/tests/webui/**/*.tsx"
+  ]
+}

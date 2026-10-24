@@ -1,0 +1,22 @@
+[
+  {"id":"ics","name":"Immigration and Citizenship Service (ICS)","category":"Identity and immigration","url":"https://www.evisa.gov.et/","portal_status":"verified","search_terms":["visa","passport","immigration","yellow card","origin id","residence permit"]},
+  {"id":"fayda","name":"National ID Program (Fayda)","category":"Identity and immigration","url":"https://id.gov.et/","portal_status":"verified","search_terms":["fayda","digital id","national id","identity"]},
+  {"id":"eservices","name":"Ethiopian Government eServices","category":"Government services","url":"https://www.eservices.gov.et/en/services","portal_status":"verified","search_terms":["eservices","government service","public service"]},
+  {"id":"motri","name":"Ministry of Trade and Regional Integration (eTrade)","category":"Business and tax","url":"https://etrade.gov.et/","portal_status":"verified","search_terms":["trade","business registration","business license","etrade"]},
+  {"id":"revenue","name":"Ministry of Revenues (eTax)","category":"Business and tax","url":"https://etax.mor.gov.et/","portal_status":"verified","search_terms":["tax","etax","tin","tax clearance","revenue"]},
+  {"id":"customs","name":"Ethiopian Customs Commission","category":"Business and tax","url":"https://customs.gov.et/","portal_status":"candidate","search_terms":["customs","import","export","cargo"]},
+  {"id":"telebirr","name":"Ethio Telecom / Telebirr","category":"Payments and utilities","url":"https://www.ethiotelecom.et/","portal_status":"candidate","search_terms":["telebirr","payment","telecom","developer api"]},
+  {"id":"telebirr_developer","name":"Telebirr Developer Portal","category":"Payments and utilities","url":"https://developer.telebirr.et/","portal_status":"candidate","search_terms":["telebirr api","payment api","webhook"]},
+  {"id":"electricity","name":"Ethiopian Electric Utility (EEU)","category":"Payments and utilities","url":"https://eeu.gov.et/","portal_status":"verified","search_terms":["electricity","power bill","prepaid meter","outage","eeu"]},
+  {"id":"water","name":"Addis Ababa Water and Sewerage Authority","category":"Payments and utilities","url":"https://aawsa.gov.et/","portal_status":"candidate","search_terms":["water bill","water connection","aawsa"]},
+  {"id":"transport","name":"Ministry of Transport and Logistics","category":"Transport and logistics","url":"https://motl.gov.et/","portal_status":"candidate","search_terms":["transport","driver license","vehicle inspection","motl"]},
+  {"id":"traffic","name":"Addis Ababa City Administration (traffic services)","category":"Transport and logistics","url":"https://addisababa.gov.et/","portal_status":"candidate","search_terms":["traffic fine","parking","vehicle fine"]},
+  {"id":"post","name":"Ethiopian Postal Service (EthioPost)","category":"Transport and logistics","url":"https://ethiopost.et/","portal_status":"candidate","search_terms":["ethiopost","postal","parcel","tracking"]},
+  {"id":"eaes","name":"Education Assessment and Examination Services (EAES)","category":"Education and health","url":"https://services.eaes.et/","portal_status":"candidate","search_terms":["eaes","exam result","national exam","education"]},
+  {"id":"ebc","name":"Ethiopian Broadcasting Corporation (EBC)","category":"Information","url":"https://www.ebc.et/","portal_status":"candidate","search_terms":["ebc","news"]},
+  {"id":"police_clearance","name":"Police Clearance Certificate","category":"Identity and immigration","url":null,"portal_status":"unverified","search_terms":["police clearance","criminal record","clearance certificate"]},
+  {"id":"labor","name":"Ministry of Labor and Skills / overseas labor services","category":"Employment and labor","url":null,"portal_status":"unverified","search_terms":["labor","labour","overseas work","contract registration","mols"]},
+  {"id":"vaccination","name":"Ethiopian Public Health Institute / yellow fever vaccination","category":"Education and health","url":null,"portal_status":"unverified","search_terms":["yellow fever","vaccine","vaccination","ephi"]},
+  {"id":"pensions","name":"Public and private employee pension services","category":"Social services","url":null,"portal_status":"unverified","search_terms":["pension","life verification","psssa","poessa"]},
+  {"id":"rental","name":"House rental contracts and Woreda registration","category":"Housing and municipal services","url":null,"portal_status":"unverified","search_terms":["rental","rent contract","lease","woreda"]}
+]

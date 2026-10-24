@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=auto"
+    />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="saba web UI — chat with your saba workspace."
+      data-i18n-meta="description"
+    />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      data-theme-color-light="#ffffff"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="saba" />
+    <link rel="icon" type="image/svg+xml" href="/brand/saba_mark.svg?v=20261024" />
+    <link rel="alternate icon" type="image/png" sizes="32x32" href="/brand/saba_favicon_32.png?v=20261024" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/saba_apple_touch.png?v=20261024" />
+    <link rel="manifest" href="/manifest.json?v=20261024" />
+    <style>
+      html,
+      body,
+      #root {
+        height: 100%;
+      }
+
+      /* App-like feel on touch devices: no double-tap zoom on interactive
+         elements (system-level accessibility zoom still works), and no text
+         size inflation on orientation change. */
+      html {
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+      }
+
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: #0a0a0a;
+        font-family:
+          system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Noto Sans SC",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+          sans-serif;
+      }
+
+      /* Work around iOS standalone's scroll-edge blur with a fixed color surface.
+         Keep this outside React's root for cold starts and route changes.
+         See docs/guides/ios-pwa-status-bar.md for the WebKit sampling contract. */
+      .pwa-status-bar-surface { display: none; }
+      @supports (-webkit-touch-callout: none) and (background-clip: text) {
+        @media (display-mode: standalone) {
+          .pwa-status-bar-surface {
+            display: block;
+            position: fixed;
+            inset: 0 0 auto;
+            height: 11px; /* Must exceed WebKit's 10px thin-border threshold. */
+            z-index: 100;
+            pointer-events: none;
+            background-color: inherit;
+            -webkit-background-clip: text;
+            background-clip: text; /* Empty text paints nothing over the controls. */
+          }
+        }
+      }
+
+    </style>
+    <!--startup-style-->
+    <script>
+      (function () {
+        try {
+          document.documentElement.classList.remove("dark");
+          var themeColor = document.querySelector('meta[name="theme-color"]');
+          if (themeColor) {
+            var color = themeColor.getAttribute("data-theme-color-light");
+            if (color) themeColor.setAttribute("content", color);
+          }
+        } catch {}
+      })();
+    </script>
+    <title>saba</title>
+  </head>
+  <body class="bg-background text-foreground antialiased">
+    <div class="pwa-status-bar-surface" aria-hidden="true"></div>
+    <div id="root"><!--startup-shell--></div>
+    <!--startup-script-->
+    <script>
+      (function () {
+        var localeKey = "saba.locale";
+        var copy = {
+          en: {
+            boot: "Loading saba…",
+            description: "saba web UI — chat with your saba workspace."
+          },
+          am: {
+            boot: "ሳባን በመጫን ላይ…",
+            description: "የሳባ ዌብ UI — ከሳባ የስራ ቦታዎ ጋር ይወያዩ።"
+          },
+          om: {
+            boot: "Saba fe'amaa jira…",
+            description: "Web UI saba — bakka hojii saba kee waliin haasa'i."
+          },
+          ti: {
+            boot: "ሳባ ይጽዓን ኣሎ…",
+            description: "Web UI ሳባ — ምስ ቦታ ስራሕ ሳባኻ ተዘራረብ።"
+          }
+        };
+
+        function normalizeLocale(input) {
+          if (!input) return "en";
+          var raw = String(input).trim();
+          if (!raw) return "en";
+          if (copy[raw]) return raw;
+          var lower = raw.toLowerCase();
+          var base = lower.split("-")[0];
+          return copy[base] ? base : "en";
+        }
+
+        try {
+          var stored = localStorage.getItem(localeKey);
+          var detected =
+            stored ||
+            (navigator.languages && navigator.languages[0]) ||
+            navigator.language ||
+            "en";
+          var locale = normalizeLocale(detected);
+          var localized = copy[locale] || copy.en;
+          document.documentElement.lang = locale;
+          var description = document.querySelector('[data-i18n-meta=\"description\"]');
+          if (description) description.setAttribute("content", localized.description);
+          var boot = document.querySelector("[data-boot-copy]");
+          if (boot) boot.textContent = localized.boot;
+        } catch {}
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
