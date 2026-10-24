@@ -61,3 +61,10 @@ asyncio.run(main())
 - [OpenAI-Compatible API](../openai-api.md)
 - [Configuration](../configuration.md)
 - [Concepts](../concepts.md)
+<<<<<<< HEAD
+=======
+
+> Keep SDK examples runnable from a clean environment.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 0c1e867 (docs: clarify setup)
