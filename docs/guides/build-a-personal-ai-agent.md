@@ -48,3 +48,10 @@ Continue in the WebUI from Quick Start. Start a new topic, select a practice fol
 - [WebUI](../webui.md)
 - [Configuration](../configuration.md)
 - [Troubleshooting](../troubleshooting.md)
+<<<<<<< HEAD
+=======
+
+> Start with the smallest useful tool set.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 92e96a5 (docs: clarify setup)
