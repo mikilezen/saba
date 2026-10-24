@@ -34,3 +34,5 @@ Ask Ethio Telecom Enterprise whether they can provision an authorized outbound S
 ## What is and is not active in Saba
 
 Saba's Vapi call client and authenticated result webhook are wired into the LangGraph agent. No call can actually start until you supply Vapi credentials, an outbound-capable imported phone route that can reach +251, and manually verified contacts in `data/voice_contacts.json`; global calls remain off by default. Test Amharic spoken output with the selected Vapi transcriber and voice. The public prices and provider requirements were checked on October 2, 2026; rates and capabilities can change.
+
+> Keep this guidance aligned with the current implementation.
