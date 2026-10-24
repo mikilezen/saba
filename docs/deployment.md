@@ -300,3 +300,10 @@ saba gateway uninstall-service --manager launchd
 The installer writes `~/Library/LaunchAgents/ai.saba.gateway.plist`, uses the current Python executable with `python -m saba gateway --foreground`, and writes LaunchAgent logs under `~/.saba/logs/`.
 
 > **Note:** if startup fails with "address already in use", stop the manually started `saba gateway` process first.
+<<<<<<< HEAD
+=======
+
+> Protect production configuration with the deployment platform secret store.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 632158d (docs: clarify setup)
