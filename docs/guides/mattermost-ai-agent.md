@@ -109,3 +109,10 @@ Then DM the bot again, or mention it in a channel where the bot has access:
 - [Pairing](../configuration.md#pairing)
 - [Long-running AI Agent](./long-running-ai-agent.md)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Match the bot permissions to the intended Mattermost channels.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 8236151 (docs: clarify setup)
