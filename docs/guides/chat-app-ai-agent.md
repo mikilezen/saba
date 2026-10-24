@@ -83,3 +83,10 @@ Use the full [Chat Apps reference](../chat-apps.md) when you manage `config.json
 - [Configuration](../configuration.md#channel-settings)
 - [Pairing](../configuration.md#pairing)
 - [Deployment](../deployment.md)
+<<<<<<< HEAD
+=======
+
+> Test incoming and outgoing messages independently.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> a7784d2 (docs: clarify setup)
