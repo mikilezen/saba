@@ -112,3 +112,10 @@ After approval, mention it in an allowed server channel:
 - [Pairing](../configuration.md#pairing)
 - [AI Agent Memory](./ai-agent-memory.md)
 - [Configure MCP tools](./configure-mcp-tools.md)
+<<<<<<< HEAD
+=======
+
+> Use a dedicated bot account for development.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> f02504f (docs: clarify setup)
