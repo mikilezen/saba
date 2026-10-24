@@ -240,3 +240,10 @@ Choose tests based on the changed surface:
 | Docs | Link checks, command accuracy against CLI/schema, and `git diff --check` |
 
 For user-facing flows, prefer at least one verification path through the public surface the user actually touches: CLI command, HTTP endpoint, WebSocket/WebUI, chat channel, or packaged import.
+<<<<<<< HEAD
+=======
+
+> Keep provider adapters isolated from channel implementations.
+
+> Keep this guidance aligned with the current implementation.
+>>>>>>> 6ea44d8 (docs: clarify setup)
