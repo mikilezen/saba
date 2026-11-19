@@ -20,7 +20,47 @@ const HIDDEN_CHANNELS = new Set([
   "fayda", "telebirr", "mpesa",
 ]);
 
-const COMING_SOON_CHANNELS: SabaFeatureInfo[] = [];
+const COMING_SOON_CHANNELS: SabaFeatureInfo[] = [
+  {
+    name: "phone-call",
+    display_name: "Phone Call",
+    type: "channel",
+    webui: "phone-coming-soon",
+    enabled: false,
+    installed: true,
+    configured: false,
+    ready: false,
+    status: "coming_soon",
+    install_supported: false,
+    requires_restart: false,
+  },
+  {
+    name: "sms-messages",
+    display_name: "SMS & Messages",
+    type: "channel",
+    webui: "phone-coming-soon",
+    enabled: false,
+    installed: true,
+    configured: false,
+    ready: false,
+    status: "coming_soon",
+    install_supported: false,
+    requires_restart: false,
+  },
+  {
+    name: "ussd",
+    display_name: "USSD",
+    type: "channel",
+    webui: "phone-coming-soon",
+    enabled: false,
+    installed: true,
+    configured: false,
+    ready: false,
+    status: "coming_soon",
+    install_supported: false,
+    requires_restart: false,
+  },
+];
 
 export function ChannelsSettings({
   token, sabaFeatures, loading, actionKey, chatAppsDocsUrl, showBrandLogos,

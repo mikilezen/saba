@@ -2,6 +2,7 @@ import type {
   ChannelUiContribution,
   RegisteredChannelUiContribution,
 } from "@/channel-plugins/types";
+import { ComingSoonPhonePanel } from "@/components/settings/channels/ComingSoonPhonePanel";
 
 type ChannelUiContributionModule = {
   default?: ChannelUiContribution;
@@ -18,6 +19,45 @@ const registrations = new Map<string, RegisteredChannelUiContribution>();
 const registrationsByChannel = new Map<string, RegisteredChannelUiContribution>();
 const presentationsByChannel = new Map<string, ChannelUiContribution["presentation"]>();
 const translationOwners = new Map<string, string>();
+
+const PHONE_CHANNEL_PRESENTATIONS: Record<string, ChannelUiContribution["presentation"]> = {
+  "phone-call": {
+    displayName: "Phone Call",
+    initials: "PH",
+    color: "#E8A317",
+    logoUrl: "/brand/channels/phone-message.png",
+    logoLayout: "tile",
+  },
+  "sms-messages": {
+    displayName: "SMS & Messages",
+    initials: "SM",
+    color: "#E8A317",
+    logoUrl: "/brand/channels/phone-message.png",
+    logoLayout: "tile",
+  },
+  ussd: {
+    displayName: "USSD",
+    initials: "US",
+    color: "#E8A317",
+    logoUrl: "/brand/channels/phone-message.png",
+    logoLayout: "tile",
+  },
+};
+
+for (const [channel, presentation] of Object.entries(PHONE_CHANNEL_PRESENTATIONS)) {
+  presentationsByChannel.set(channel, presentation);
+  translationOwners.set(channel, channel);
+  registrations.set(`${channel}:phone-coming-soon`, {
+    channel,
+    webui: "phone-coming-soon",
+    contribution: {
+      presentation,
+      Panel: ComingSoonPhonePanel,
+      canConnectBeforeConfigured: true,
+    },
+  });
+  registrationsByChannel.set(channel, registrations.get(`${channel}:phone-coming-soon`)!);
+}
 
 for (const [modulePath, module] of Object.entries(modules)) {
   const contribution = module.default;

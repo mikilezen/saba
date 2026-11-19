@@ -76,7 +76,7 @@ export function ChannelCatalogRow({
       "settings-list-row flex min-w-0 items-center gap-3 py-2.5 transition-colors",
       !alwaysEnabled && !comingSoon && "settings-hover",
     )}>
-      {alwaysEnabled || comingSoon ? (
+      {alwaysEnabled ? (
         <div className="flex min-w-0 flex-1 select-none items-center gap-3">
           {channelIdentity}
         </div>
@@ -148,7 +148,7 @@ export function ChannelCatalogRow({
         ) : (
           <ToggleButton checked={checked}
             label={checked ? tx("settings.values.on", "On") : tx("settings.values.off", "Off")}
-            disabled={alwaysEnabled || actionsDisabled || anyActionBusy}
+            disabled={alwaysEnabled || comingSoon || actionsDisabled || anyActionBusy}
             ariaLabel={t("settings.channels.toggleChannel", { name: displayName, defaultValue: "{{name}} channel" })}
             onChange={(enabled) => {
               if (enabled && feature.configured === false) onSelect(true);
