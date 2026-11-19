@@ -72,6 +72,14 @@ The Plugins screen shows available applications and tools, including browser aut
   <img src="./images/screens/webui-plugins.png" alt="Saba WebUI plugins and tools screen" width="900">
 </p>
 
+### Manage MCP tools
+
+The MCP screen lets you search available MCP integrations, connect tools, and add custom or imported MCP configurations.
+
+<p align="center">
+  <img src="./images/screens/webui-mcp.png" alt="Saba WebUI MCP tools screen" width="900">
+</p>
+
 ## Choose your setup
 
 | Goal | Use |
