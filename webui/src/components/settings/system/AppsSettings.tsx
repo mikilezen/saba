@@ -266,11 +266,11 @@ const CHANNEL_PLUGINS: ChannelPluginInfo[] = [
     logoLayout: "tile",
   },
   {
-    name: "ethiopian-bank",
-    displayName: "Ethiopian Bank",
+    name: "awash-ethiopian-bank",
+    displayName: "Awash Bank",
     description: "Banking and financial services integration",
     category: "Finance",
-    logoUrl: "/new/images_(5).jpg",
+    logoUrl: "/new/Awash_International_Bank.png",
     logoLayout: "tile",
   },
   {
