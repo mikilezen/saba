@@ -11,6 +11,7 @@ import {
   SIDEBAR_SELECTION_ITEM_CLASS,
   SidebarSelectionHighlight,
 } from "@/components/SidebarSelectionHighlight";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { isCapabilitySection, type SettingsSectionKey } from "@/components/settings/contracts";
 import { Button } from "@/components/ui/button";
 import {
@@ -135,6 +136,13 @@ export function SettingsSidebar(props: SettingsSidebarProps) {
           })}
         </SidebarSelectionHighlight>
       </nav>
+
+      <div className="mt-3 border-t border-border/45 pt-3">
+        <p className="px-2.5 pb-1 text-[11px] font-medium text-muted-foreground">
+          {t("settings.rows.language", { defaultValue: "Language" })}
+        </p>
+        <LanguageSwitcher className="h-9 w-full justify-between rounded-xl px-2.5 text-xs" />
+      </div>
 
       <div className="pt-2 lg:mt-auto lg:pt-4">
         {onRestart ? (
@@ -272,6 +280,12 @@ function MobileSettingsNavigation({
           {restartAction}
         </div>
       ) : null}
+      <div className="flex items-center justify-between gap-3 border-t border-border/45 px-4 py-3">
+        <span className="text-xs font-medium text-muted-foreground">
+          {t("settings.rows.language", { defaultValue: "Language" })}
+        </span>
+        <LanguageSwitcher className="h-9 min-w-32 rounded-xl px-2.5 text-xs" />
+      </div>
     </aside>
   );
 }
