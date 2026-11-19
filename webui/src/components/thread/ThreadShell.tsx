@@ -1415,13 +1415,28 @@ export function ThreadShell({
           onQuotedContextChange={setQuotedContext}
         />
       )}
+      {composerVariant === "hero" ? (
+        <section className="saba-automation-panel" aria-label="automate tasks">
+          <h2>automate tasks</h2>
+          <p>Let's consider, that the total volume of the formal action should keep its influence over The Capability of Perplexed Comprehension</p>
+          <p>Thus, violations of the basic feature discards the principle of The Comparison of Notable Evolution (Isaac Rowland in The Book of the Technical Requirements)</p>
+          <p>Surprisingly, a user-friendly action of segments of the overall scores seems to uniquely change the paradigm of The Software of Explanatory Origin</p>
+        </section>
+      ) : null}
     </div>
   );
 
   const emptyState = initialHistoryLoading ? (
     <ThreadLoadingSkeleton />
   ) : (
-    <div className="flex w-full flex-col items-center text-center animate-in fade-in-0 slide-in-from-bottom-2 [animation-duration:220ms] motion-reduce:animate-none">
+    <div className="saba-hero-empty flex w-full flex-col items-center text-center animate-in fade-in-0 slide-in-from-bottom-2 [animation-duration:220ms] motion-reduce:animate-none">
+      <img
+        className="saba-hero-mascot select-none object-contain"
+        src="/brand/saba_mark.svg"
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+      />
       <HeroGreeting text={t(heroGreetingKey)} />
       <div className="hero-privacy-note">
         <ShieldCheck aria-hidden="true" />

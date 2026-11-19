@@ -185,7 +185,7 @@ export function Sidebar(props: SidebarProps) {
       ref={props.containActionMenus ? setMenuPortalContainer : undefined}
       aria-label={t("sidebar.navigation")}
       className={cn(
-        "flex h-full w-full min-w-0 flex-col text-sidebar-content",
+        "saba-redesign-sidebar flex h-full w-full min-w-0 flex-col text-sidebar-content",
         props.hostChromeInset ? "bg-transparent" : "bg-sidebar",
       )}
     >
@@ -218,7 +218,7 @@ export function Sidebar(props: SidebarProps) {
           />
         </button>
         {!collapsed && (
-          <span className="sidebar-brand-name" aria-hidden="true">Saba AI</span>
+          <span className="sidebar-brand-name" aria-hidden="true">saba</span>
         )}
         {!collapsed && (
           <div className={cn("flex min-w-0 flex-1 items-center justify-end gap-1", props.hostChromeInset && "mt-5")}>
@@ -392,7 +392,7 @@ function SidebarActionButton({
       onFocus={onIntent}
       onPointerEnter={onIntent}
       className={cn(
-        "touch-target group h-8 min-w-0 gap-2 overflow-hidden rounded-control font-normal",
+        "saba-nav-action touch-target group h-8 min-w-0 gap-2 overflow-hidden rounded-control font-normal",
         SIDEBAR_SELECTION_ACTION_ITEM_CLASS,
         collapsed
           ? "w-8 justify-center gap-0 px-0"

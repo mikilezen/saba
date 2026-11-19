@@ -26,7 +26,9 @@ describe("channel UI contributions", () => {
     const channels = registrations.map((entry) => entry.channel);
     expect(channels).toEqual(expect.arrayContaining(["feishu", "linear", "weixin"]));
     expect(new Set(channels).size).toBe(channels.length);
-    expect(registrations.every((entry) => /^webui\/index\.tsx?$/.test(entry.webui))).toBe(true);
+    expect(registrations.every((entry) =>
+      entry.webui === "phone-coming-soon" || /^webui\/index\.tsx?$/.test(entry.webui)
+    )).toBe(true);
     expect(channelUiContribution("slack", "webui/index.ts")?.presentation.displayName).toBe("Slack");
   });
 
@@ -35,6 +37,12 @@ describe("channel UI contributions", () => {
     expect(channelUiPresentation("wechat")?.displayName).toBe("WeChat");
     expect(channelUiOwner("lark")).toBe("feishu");
     expect(channelUiOwner("wechat")).toBe("weixin");
+  });
+
+  it("uses a distinct supplied asset for each phone channel", () => {
+    expect(channelUiPresentation("phone-call")?.logoUrl).toBe("/brand/channels/phone-call.png");
+    expect(channelUiPresentation("sms-messages")?.logoUrl).toBe("/brand/channels/sms-messages.png");
+    expect(channelUiPresentation("ussd")?.logoUrl).toBe("/brand/channels/ussd.png");
   });
 
   it("includes channel-owned UI in Tailwind's production scan", async () => {

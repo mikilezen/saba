@@ -17,7 +17,7 @@ import { RemoteInstances } from "@/components/remote/RemoteInstances";
 import { useRemoteConnections } from "@/components/remote/remote-context";
 import { RemoteConnectionsPage } from "@/components/remote/RemoteConnectionsPage";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { SidebarResizeHandle, SIDEBAR_MIN_WIDTH, SIDEBAR_MAX_WIDTH } from "@/components/SidebarResizeHandle";
+import { SidebarResizeHandle, SIDEBAR_MIN_WIDTH } from "@/components/SidebarResizeHandle";
 import { matchSidebarShortcut } from "@/lib/sidebar-shortcuts";
 import type { SidebarDeleteItem } from "@/components/ChatList";
 import type { SettingsSectionKey } from "@/components/settings/SettingsView";
@@ -136,7 +136,7 @@ const LEGACY_COMPLETED_RUNS_STORAGE_KEY = "saba-webui.sidebar.completed-runs.v1"
 const RESTART_STARTED_KEY = "saba-webui.restartStartedAt";
 const RESTART_ROUTE_KEY = "saba-webui.restartRoute";
 const RESTART_ROUTE_TTL_MS = 5 * 60 * 1000;
-const SIDEBAR_WIDTH = 272;
+const SIDEBAR_WIDTH = 485;
 const SIDEBAR_WIDTH_STORAGE_KEY = "saba-webui.sidebar.width";
 const SIDEBAR_RAIL_WIDTH = 56;
 const MOBILE_SIDEBAR_WIDTH = `min(${SIDEBAR_WIDTH}px, calc(100vw - 0.75rem))`;
@@ -522,12 +522,16 @@ function AuthForm({
 }
 
 function readSidebarWidth(): number {
+  const responsiveWidth = Math.round(
+    Math.min(SIDEBAR_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, window.innerWidth * 0.252)),
+  );
   try {
     const width = Number(window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY));
     return Number.isFinite(width) && width >= SIDEBAR_MIN_WIDTH
-      ? Math.min(SIDEBAR_MAX_WIDTH, width) : SIDEBAR_WIDTH;
+      ? Math.min(responsiveWidth, width)
+      : responsiveWidth;
   } catch {
-    return SIDEBAR_WIDTH;
+    return responsiveWidth;
   }
 }
 
@@ -2845,7 +2849,7 @@ function Shell({
         ) : null}
         <div
           className={cn(
-            "relative flex h-full w-full overflow-hidden",
+            "saba-redesign relative flex h-full w-full overflow-hidden",
           )}
         >
           {/* Host sidebar: in normal flow, so the thread area width stays honest. */}

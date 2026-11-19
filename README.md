@@ -5,12 +5,12 @@ Saba is a self-hosted AI assistant. It gives you one place to chat with an AI mo
 Saba runs on your computer or server. You choose the AI provider, the model, the files it can access, and the tools it can use.
 
 <p align="center">
-  <img src="./images/saba_logo.png" alt="Saba AI" width="380">
+  <img src="./images/brand/saba.png" alt="Saba AI" width="380">
 </p>
-
+<!-- 
 <p align="center">
   <img src="./images/saba_mascot.png" alt="Saba mascot" width="140">
-</p>
+</p> -->
 
 ## What Saba does
 

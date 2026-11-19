@@ -9,8 +9,16 @@ import {
 } from "react";
 
 type Theme = "light" | "dark";
-const STORAGE_KEY = "saba-webui.theme";
+const STORAGE_KEY = "saba-webui.theme.v2";
 const ThemeContext = createContext<Theme>("light");
+
+function readStoredTheme(): Theme {
+  try {
+    return localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
+  } catch {
+    return "dark";
+  }
+}
 
 function applyTheme(theme: Theme): void {
   const root = document.documentElement;
@@ -30,7 +38,7 @@ export function useTheme(): {
   toggle: () => void;
   setTheme: (t: Theme) => void;
 } {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
 
   useEffect(() => {
     applyTheme(theme);
@@ -41,8 +49,10 @@ export function useTheme(): {
     }
   }, [theme]);
 
-  const setTheme = useCallback((_t: Theme) => setThemeState("light"), []);
-  const toggle = useCallback(() => setThemeState("light"), []);
+  const setTheme = useCallback((nextTheme: Theme) => setThemeState(nextTheme), []);
+  const toggle = useCallback(() => {
+    setThemeState((current) => current === "dark" ? "light" : "dark");
+  }, []);
   return { theme, toggle, setTheme };
 }
 

@@ -2,7 +2,7 @@ import { useRef, type PointerEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 export const SIDEBAR_MIN_WIDTH = 220;
-export const SIDEBAR_MAX_WIDTH = 480;
+export const SIDEBAR_MAX_WIDTH = 485;
 
 interface SidebarResizeHandleProps {
   width: number;

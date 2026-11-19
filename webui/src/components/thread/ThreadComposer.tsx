@@ -2500,6 +2500,7 @@ export function ThreadComposer({
         : t("thread.composer.voice.hint");
   // Touch users need an explicit send action; keep Stop while sending is unavailable.
   const showStopButton = isStreaming && !!onStop && !canSend;
+  const showSendButton = !showVoiceButton && !showStopButton && !modelNeedsSetup && canSend;
   const relaxedHeroInput = isHero && images.length === 0 && !isStreaming;
   const compactIdle = compactWhenIdle && !compactControls && !isHero && !composerFocused
     && value.length === 0 && images.length === 0 && !inlineError
@@ -2889,7 +2890,9 @@ export function ThreadComposer({
                         ? "border border-border/70 bg-card text-foreground/85 hover:text-foreground disabled:text-muted-foreground/50"
                         : "border border-foreground bg-foreground text-background disabled:border-foreground disabled:bg-foreground disabled:text-background",
                       showVoiceButton && voiceRecorder.isRecording && "border-red-500 bg-red-500 text-white hover:bg-red-500 hover:text-white",
-                      isHero ? "h-8 w-8" : "h-9 w-9",
+                      showSendButton
+                        ? "h-10 min-w-[95px] px-5"
+                        : isHero ? "h-8 w-8" : "h-9 w-9",
                     )}
                   >
                     {showVoiceButton ? (
@@ -2904,6 +2907,10 @@ export function ThreadComposer({
                       <StopIcon className={cn("fill-current stroke-current", isHero ? "h-3 w-3" : "h-3.5 w-3.5")} />
                     ) : modelNeedsSetup ? (
                       <ModelsIcon className="h-4 w-4" />
+                    ) : showSendButton ? (
+                      <span className="text-[16px] font-normal lowercase">
+                        {t("thread.composer.sendShort", { defaultValue: "send" })}
+                      </span>
                     ) : canSend || !isStreaming ? (
                       <ArrowUp className="h-4 w-4" />
                     ) : (

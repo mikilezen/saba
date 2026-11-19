@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=auto"
     />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <meta
       name="description"
       content="saba web UI — chat with your saba workspace."
@@ -14,8 +14,9 @@
     />
     <meta
       name="theme-color"
-      content="#ffffff"
+      content="#1f1f1f"
       data-theme-color-light="#ffffff"
+      data-theme-color-dark="#1f1f1f"
     />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -42,8 +43,8 @@
 
       body {
         margin: 0;
-        background: #ffffff;
-        color: #0a0a0a;
+        background: #1f1f1f;
+        color: #ffffff;
         font-family:
           system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, "Noto Sans", "Noto Sans SC",
@@ -76,10 +77,10 @@
     <script>
       (function () {
         try {
-          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("dark");
           var themeColor = document.querySelector('meta[name="theme-color"]');
           if (themeColor) {
-            var color = themeColor.getAttribute("data-theme-color-light");
+            var color = themeColor.getAttribute("data-theme-color-dark");
             if (color) themeColor.setAttribute("content", color);
           }
         } catch {}

@@ -5,7 +5,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 describe("useTheme", () => {
   beforeEach(() => {
-    localStorage.removeItem("saba-webui.theme");
+    localStorage.removeItem("saba-webui.theme.v2");
     document.documentElement.classList.remove("dark");
 
     const themeColor = document.createElement("meta");
@@ -19,20 +19,24 @@ describe("useTheme", () => {
   afterEach(() => {
     document.querySelector('meta[name="theme-color"]')?.remove();
     document.documentElement.classList.remove("dark");
-    localStorage.removeItem("saba-webui.theme");
+    localStorage.removeItem("saba-webui.theme.v2");
   });
 
-  it("always uses the light theme", () => {
-    localStorage.setItem("saba-webui.theme", "dark");
+  it("restores and toggles the saved theme", () => {
+    localStorage.setItem("saba-webui.theme.v2", "dark");
     const { result } = renderHook(useTheme);
     const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
+    expect(document.documentElement).toHaveClass("dark");
+    expect(themeColor?.content).toBe("#303030");
+    expect(localStorage.getItem("saba-webui.theme.v2")).toBe("dark");
+
+    act(() => result.current.toggle());
     expect(document.documentElement).not.toHaveClass("dark");
-    expect(themeColor?.content).toBe("#ffffff");
-    expect(localStorage.getItem("saba-webui.theme")).toBe("light");
+    expect(localStorage.getItem("saba-webui.theme.v2")).toBe("light");
 
     act(() => result.current.setTheme("dark"));
-    expect(document.documentElement).not.toHaveClass("dark");
-    expect(localStorage.getItem("saba-webui.theme")).toBe("light");
+    expect(document.documentElement).toHaveClass("dark");
+    expect(localStorage.getItem("saba-webui.theme.v2")).toBe("dark");
   });
 });
