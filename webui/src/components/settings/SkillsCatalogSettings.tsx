@@ -38,6 +38,39 @@ import type { SkillDetail, SkillSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useClient } from "@/providers/ClientProvider";
 
+type EthiopianSkill = {
+  name: string;
+  description: string;
+  example: string;
+};
+
+const ETHIOPIAN_SKILLS: EthiopianSkill[] = [
+  ["agriculture", "Farming guidance", "What fertilizer is suitable?"],
+  ["banking", "Understand banking operations", "Explain this bank receipt"],
+  ["business", "Business research", "Find software companies in Addis"],
+  ["calendar", "Convert dates and holidays", "What is today in Ethiopian calendar?"],
+  ["culture", "Local customs and traditions", "Explain Meskel"],
+  ["currency", "Currency and financial calculations", "Convert 100 USD to ETB"],
+  ["education", "Support students", "Explain this university assignment"],
+  ["geography", "Local places and directions", "Tell me about Adama"],
+  ["government", "Explain public procedures", "How do I renew my passport?"],
+  ["healthcare", "Health information and service discovery", "Find a nearby hospital"],
+  ["jobs", "Search and prepare applications", "Find Python developer jobs"],
+  ["languages", "Understand local language and context", "Explain this in Afaan Oromoo"],
+  ["law", "Explain Ethiopian legal information", "Explain this Ethiopian employment law"],
+  ["news", "Understand and summarize local news", "Summarize today's news"],
+  ["payments", "Guide payment workflows", "Pay my electricity bill"],
+  ["recipes", "Ethiopian cooking", "How do I make shiro?"],
+  ["shopping", "Compare local products", "Find a laptop under 50,000 birr"],
+  ["telecom", "Understand airtime and packages", "Which data package is cheaper?"],
+  ["transport", "Plan journeys", "How do I get to Bole?"],
+  ["travel", "Tourism and travel planning", "Plan a Lalibela trip"],
+].map(([name, description, example]) => ({
+  name: `Ethiopian ${name}`,
+  description,
+  example,
+}));
+
 export function SkillsCatalogSettings({ skills, loading = false, error = false }: {
   skills: SkillSummary[];
   loading?: boolean;
@@ -80,6 +113,10 @@ export function SkillsCatalogSettings({ skills, loading = false, error = false }
     },
   ].filter((group) => group.skills.length);
   const disabledCount = skills.filter((skill) => skill.enabled === false).length;
+  const visibleEthiopianSkills = ETHIOPIAN_SKILLS.filter((skill) =>
+    !normalizedQuery
+      || `${skill.name} ${skill.description} ${skill.example}`.toLowerCase().includes(normalizedQuery),
+  );
 
   return (
     <div className="settings-stack">
@@ -168,6 +205,30 @@ export function SkillsCatalogSettings({ skills, loading = false, error = false }
             </div>
           )}
       </section>
+
+      {visibleEthiopianSkills.length ? (
+        <section className="overflow-hidden rounded-panel bg-red">
+          <div className="flex items-center gap-2 border-b border-border/45 px-4 py-3">
+            <h2 className="text-[13px] font-medium text-muted-foreground">
+              Ethiopian Skills
+            </h2>
+            <span className="text-[12px] tabular-nums text-muted-foreground/60">
+              {visibleEthiopianSkills.length}
+            </span>
+          </div>
+          <div className="grid gap-1 px-3 py-2 sm:px-4">
+            {visibleEthiopianSkills.map((skill) => (
+              <article key={skill.name} className="rounded-control px-2 py-2.5 settings-hover">
+                <h3 className="text-[13px] font-medium text-foreground">{skill.name}</h3>
+                <p className="text-[12.5px] leading-5 text-muted-foreground">{skill.description}</p>
+                <p className="text-[11.5px] leading-5 text-muted-foreground/75">
+                  Example: “{skill.example}”
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <SkillDetailSheet
         key={selectedSkill ? `${selectedSkill.source}:${selectedSkill.name}` : "closed"}
