@@ -75,7 +75,10 @@ type ChannelPluginInfo = {
   name: string;
   displayName: string;
   description: string;
-  logoUrl: string;
+  category: string;
+  logoUrl?: string;
+  catalogType?: "Plugin" | "Skill";
+  exampleRequest?: string;
   logoLayout?: "tile";
 };
 const VISIBLE_CLI_APPS = new Set([
@@ -94,18 +97,21 @@ const CHANNEL_PLUGINS: ChannelPluginInfo[] = [
     name: "browser-cdp",
     displayName: "Browser CDP",
     description: "Browser automation via raw Chrome DevTools Protocol",
+    category: "Browser",
     logoUrl: "https://cdn.simpleicons.org/googlechrome/4285F4",
   },
   {
     name: "cli-app-browser-cdp",
     displayName: "CLI Browser CDP",
     description: "Browser automation via raw Chrome DevTools Protocol",
+    category: "Browser",
     logoUrl: "https://cdn.simpleicons.org/googlechrome/4285F4",
   },
   {
     name: "ebc-nation",
     displayName: "EBC Nation",
     description: "Ethiopian Broadcasting Corporation integration",
+    category: "Media",
     logoUrl: "/brand/channels/ebc-nation.png?v=20261024",
     logoLayout: "tile",
   },
@@ -113,27 +119,151 @@ const CHANNEL_PLUGINS: ChannelPluginInfo[] = [
     name: "ati",
     displayName: "ATI",
     description: "Agricultural Transformation Institute integration",
-    logoUrl: "/brand/channels/ati.png?v=20261024",
+    category: "Agriculture",
+    logoUrl: "/new/agricultural_transformation.png",
     logoLayout: "tile",
   },
   {
     name: "fayda",
     displayName: "Fayda",
     description: "National identity integration",
+    category: "Government and identity",
     logoUrl: "/brand/channels/fayda.svg?v=20261024",
+    logoLayout: "tile",
+  },
+  {
+    name: "arsi-university",
+    displayName: "Arsi University",
+    description: "Education and research integration",
+    category: "Education and research",
+    logoUrl: "/new/arsi.png",
     logoLayout: "tile",
   },
   {
     name: "telebirr",
     displayName: "Telebirr",
     description: "Payments and utilities integration",
+    category: "Finance",
     logoUrl: "/brand/channels/telebirr.svg?v=20261024",
   },
   {
     name: "mpesa",
     displayName: "M-Pesa",
     description: "Payments integration",
+    category: "Finance",
     logoUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0b/M-PESA.png",
+  },
+  {
+    name: "addis-standard-media",
+    displayName: "Addis Standard Media",
+    description: "News and media integration",
+    category: "Media",
+    logoUrl: "/new/addis_standard_media.webp",
+    logoLayout: "tile",
+  },
+  {
+    name: "cbe",
+    displayName: "Commercial Bank of Ethiopia",
+    description: "Banking and financial services integration",
+    category: "Finance",
+    logoUrl: "/new/cbe_logo.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "coop-bank-of-oromia",
+    displayName: "Coop Bank of Oromia",
+    description: "Banking and financial services integration",
+    category: "Finance",
+    logoUrl: "/new/images.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "coop-bank-of-oromia",
+    displayName: "Coop Bank of Oromia",
+    description: "Banking and financial services integration",
+    category: "Finance",
+    logoUrl: "/new/images.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "ena",
+    displayName: "Ethiopian News Agency",
+    description: "News and media integration",
+    category: "Media",
+    logoUrl: "/new/ena_logo.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "ethio-jobs",
+    displayName: "Ethio Jobs",
+    description: "Jobs and employment integration",
+    category: "Jobs",
+    logoUrl: "/new/ethio_jobs_logo.jpg",
+    logoLayout: "tile",
+  },
+  {
+    name: "ethio-telecom",
+    displayName: "Ethio Telecom",
+    description: "Telecom and connectivity integration",
+    category: "Telecom",
+    logoUrl: "/new/ethio_telecom_logo.jpg",
+    logoLayout: "tile",
+  },
+  {
+    name: "fana",
+    displayName: "Fana",
+    description: "News and media integration",
+    category: "Media",
+    logoUrl: "/new/fana_logo.jpg",
+    logoLayout: "tile",
+  },
+  {
+    name: "feres",
+    displayName: "Feres",
+    description: "Ride and transport integration",
+    category: "Transport",
+    logoUrl: "/new/feres_logo.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "jiji",
+    displayName: "Jiji",
+    description: "Marketplace integration",
+    category: "Shopping",
+    logoUrl: "/new/jiji_logo.jpg",
+    logoLayout: "tile",
+  },
+  {
+    name: "ride",
+    displayName: "Ride",
+    description: "Ride and transport integration",
+    category: "Transport",
+    logoUrl: "/new/ride_app_logo.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "safaricom",
+    displayName: "Safaricom",
+    description: "Telecom and connectivity integration",
+    category: "Telecom",
+    logoUrl: "/new/safaricom_logo.jpg",
+    logoLayout: "tile",
+  },
+  {
+    name: "sheger-bus",
+    displayName: "Sheger Bus",
+    description: "Public transport integration",
+    category: "Transport",
+    logoUrl: "/new/sheger_bus_logo.png",
+    logoLayout: "tile",
+  },
+  {
+    name: "zmall",
+    displayName: "Zmall",
+    description: "Shopping and marketplace integration",
+    category: "Shopping",
+    logoUrl: "/new/zmall_logo.png",
+    logoLayout: "tile",
   },
 ];
 type CustomMcpTransport = "stdio" | "streamableHttp" | "sse";
@@ -317,6 +447,17 @@ export function AppsCatalogSettings({
     mcpError ||
     (!focusedApp ? cliMessage || mcpMessage : null);
   const statusIsError = Boolean(cliError || mcpError);
+  const pluginGroups = Array.from(
+    items
+      .filter((item): item is Extract<AppsCatalogItem, { kind: "channel" }> => item.kind === "channel")
+      .reduce((groups, item) => {
+        const group = groups.get(item.plugin.category) ?? [];
+        group.push(item);
+        groups.set(item.plugin.category, group);
+        return groups;
+      }, new Map<string, Extract<AppsCatalogItem, { kind: "channel" }>[]>()),
+  ).sort(([left], [right]) => left.localeCompare(right));
+  const nonPluginItems = items.filter((item) => item.kind !== "channel");
   const oauthStatusAnnouncement = mcpOAuthFlow
     ? mcpOAuthStatusText(
       mcpOAuthFlow.status,
@@ -384,45 +525,63 @@ export function AppsCatalogSettings({
           </span>
         </div>
         {items.length ? (
-          <div className="grid grid-cols-1 gap-x-10 gap-y-1 py-3 xl:grid-cols-2">
-            {items.map((item) =>
-              item.kind === "cli" ? (
-                <CliAppsCatalogRow
-                  key={item.id}
-                  app={item.app}
-                  actionKey={cliActionKey}
-                  showBrandLogos={showBrandLogos}
-                  onAction={onCliAction}
-                />
-              ) : item.kind === "channel" ? (
-                <ChannelPluginCatalogRow key={item.id} plugin={item.plugin} showBrandLogos={showBrandLogos} />
-              ) : (
-                <McpAppsCatalogRow
-                  key={item.id}
-                  preset={item.preset}
-                  openConnection={setupName === item.preset.name}
-                  onConnectionOpened={onSetupOpened}
-                  onConfigureProxy={onConfigureProxy}
-                  values={mcpFieldValues[item.preset.name] ?? {}}
-                  actionKey={mcpActionKey}
-                  oauthFlow={mcpOAuthFlow?.name === item.preset.name ? mcpOAuthFlow : null}
-                  oauthPopupBlocked={mcpOAuthPopupBlocked}
-                  oauthCallbackUrl={mcpOAuthCallbackUrl}
-                  oauthCompleting={mcpOAuthCompleting}
-                  oauthCallbackError={mcpOAuthCallbackError}
-                  showBrandLogos={showBrandLogos}
-                  showTypeBadge={filter !== "mcp"}
-                  onFieldChange={onMcpFieldChange}
-                  onAction={onMcpAction}
-                  onOAuthConnect={onMcpOAuthConnect}
-                  onOAuthCancel={onMcpOAuthCancel}
-                  onOAuthOpen={onMcpOAuthOpen}
-                  onOAuthCallbackUrlChange={onMcpOAuthCallbackUrlChange}
-                  onOAuthComplete={onMcpOAuthComplete}
-                  onToolsChange={onMcpToolsChange}
-                />
-              ),
-            )}
+          <div className="space-y-4 py-3">
+            {nonPluginItems.length ? (
+              <div className="grid grid-cols-1 gap-x-10 gap-y-1 xl:grid-cols-2">
+                {nonPluginItems.map((item) =>
+                  item.kind === "cli" ? (
+                    <CliAppsCatalogRow
+                      key={item.id}
+                      app={item.app}
+                      actionKey={cliActionKey}
+                      showBrandLogos={showBrandLogos}
+                      onAction={onCliAction}
+                    />
+                  ) : (
+                    <McpAppsCatalogRow
+                      key={item.id}
+                      preset={item.preset}
+                      openConnection={setupName === item.preset.name}
+                      onConnectionOpened={onSetupOpened}
+                      onConfigureProxy={onConfigureProxy}
+                      values={mcpFieldValues[item.preset.name] ?? {}}
+                      actionKey={mcpActionKey}
+                      oauthFlow={mcpOAuthFlow?.name === item.preset.name ? mcpOAuthFlow : null}
+                      oauthPopupBlocked={mcpOAuthPopupBlocked}
+                      oauthCallbackUrl={mcpOAuthCallbackUrl}
+                      oauthCompleting={mcpOAuthCompleting}
+                      oauthCallbackError={mcpOAuthCallbackError}
+                      showBrandLogos={showBrandLogos}
+                      showTypeBadge={filter !== "mcp"}
+                      onFieldChange={onMcpFieldChange}
+                      onAction={onMcpAction}
+                      onOAuthConnect={onMcpOAuthConnect}
+                      onOAuthCancel={onMcpOAuthCancel}
+                      onOAuthOpen={onMcpOAuthOpen}
+                      onOAuthCallbackUrlChange={onMcpOAuthCallbackUrlChange}
+                      onOAuthComplete={onMcpOAuthComplete}
+                      onToolsChange={onMcpToolsChange}
+                    />
+                  ),
+                )}
+              </div>
+            ) : null}
+            {pluginGroups.map(([category, plugins]) => (
+              <section key={category} className="space-y-1">
+                <h3 className="px-3 text-[12px] font-medium uppercase tracking-wide text-muted-foreground">
+                  {category}
+                </h3>
+                <div className="grid grid-cols-1 gap-x-10 gap-y-1 xl:grid-cols-2">
+                  {plugins.map((item) => (
+                    <ChannelPluginCatalogRow
+                      key={item.id}
+                      plugin={item.plugin}
+                      showBrandLogos={showBrandLogos}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         ) : null}
         {loading ? (
@@ -583,7 +742,7 @@ function ChannelPluginCatalogRow({
         "flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted/60",
         plugin.logoLayout === "tile" && "p-1",
       )}>
-        {showBrandLogos ? (
+        {showBrandLogos && plugin.logoUrl ? (
           <img src={plugin.logoUrl} alt="" className="h-full w-full object-contain" />
         ) : (
           <span className="text-xs font-semibold text-muted-foreground">
@@ -594,11 +753,16 @@ function ChannelPluginCatalogRow({
       <div className="min-w-0 flex-1">
         <div className="flex min-w-0 items-baseline gap-2">
           <h3 className="truncate text-[14px] font-semibold leading-5 text-foreground">{plugin.displayName}</h3>
-          <AppsTypeBadge>Plugin</AppsTypeBadge>
+          <AppsTypeBadge>{plugin.catalogType ?? "Plugin"}</AppsTypeBadge>
         </div>
         <p className="mt-0.5 truncate text-[12.5px] leading-5 text-muted-foreground">
           {plugin.description}
         </p>
+        {plugin.exampleRequest ? (
+          <p className="truncate text-[11.5px] leading-5 text-muted-foreground/75">
+            Example: “{plugin.exampleRequest}”
+          </p>
+        ) : null}
       </div>
       <AppsActionButton
         ariaLabel={`${plugin.displayName}: Coming soon`}
@@ -1112,7 +1276,13 @@ function appsSearchText(item: AppsCatalogItem): string {
       .toLowerCase();
   }
   if (item.kind === "channel") {
-    return `${item.plugin.displayName} ${item.plugin.name} ${item.plugin.description}`.toLowerCase();
+    return [
+      item.plugin.displayName,
+      item.plugin.name,
+      item.plugin.description,
+      item.plugin.exampleRequest ?? "",
+      item.plugin.category,
+    ].join(" ").toLowerCase();
   }
   const preset = item.preset;
   return [
