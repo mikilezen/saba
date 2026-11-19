@@ -80,6 +80,14 @@ The MCP screen lets you search available MCP integrations, connect tools, and ad
   <img src="./images/screens/webui-mcp.png" alt="Saba WebUI MCP tools screen" width="900">
 </p>
 
+### Browse skills
+
+The Skills screen lists available task skills with short descriptions and example prompts.
+
+<p align="center">
+  <img src="./images/screens/webui-skills.png" alt="Saba WebUI skills screen" width="900">
+</p>
+
 ## Choose your setup
 
 | Goal | Use |
