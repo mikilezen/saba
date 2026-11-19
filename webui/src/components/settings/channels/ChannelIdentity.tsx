@@ -161,7 +161,8 @@ export function ChannelLogo({
       : fallbackUrls;
   }, [presentation?.logoUrl, presentation?.logoFallbackUrl]);
   const { logoUrl, logoLoaded, onLogoError, onLogoLoad } = useLogoFallback(logoUrls);
-  const showRemoteLogo = showBrandLogos && Boolean(logoUrl);
+  const showPhoneChannelLogo = ["phone-call", "sms-messages", "ussd"].includes(feature.name);
+  const showRemoteLogo = (showBrandLogos || showPhoneChannelLogo) && Boolean(logoUrl);
   const showLoadedLogo = showRemoteLogo && logoLoaded;
   const isLogoTile = presentation?.logoLayout === "tile" && logoUrl === presentation.logoUrl;
 
