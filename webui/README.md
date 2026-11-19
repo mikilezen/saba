@@ -1,6 +1,6 @@
-# saba WebUI Source
+# Saba v2 WebUI Source
 
-This directory contains the React/TypeScript source for the saba WebUI. If you installed `saba-ai` from PyPI and only want to use the bundled browser UI, read the user guide in [`docs/webui.md`](../docs/webui.md). You do not need Node.js, Bun, Vite, or anything in this directory unless you are changing the frontend.
+This directory contains the React/TypeScript source for the Saba v2 WebUI. If you installed `saba-ai` from PyPI and only want to use the bundled browser UI, read the user guide in [`docs/webui.md`](../docs/webui.md). You do not need Node.js, Bun, Vite, or anything in this directory unless you are changing the frontend.
 
 For the project overview, install guide, and general docs map, see the root [`README.md`](../README.md) and [`docs/README.md`](../docs/README.md).
 
@@ -14,6 +14,18 @@ For the project overview, install guide, and general docs map, see the root [`RE
 | Debug setup failures | [`docs/troubleshooting.md#webui-problems`](../docs/troubleshooting.md#webui-problems) | Diagnosis order and common fixes |
 
 The source app is built with Vite + React 18 + TypeScript + Tailwind 3 + shadcn/ui. It talks to the gateway over the WebSocket multiplex protocol and reads session metadata from the embedded REST surface on the same port.
+
+## Saba v2 interface updates
+
+The current WebUI refresh keeps the existing chat functionality while updating the visual system:
+
+- dark `#1F1F1F` chat canvas with a `#1D1D1D` responsive sidebar;
+- compact, left-aligned sidebar navigation with inset dividers and centered Settings;
+- responsive composer sizing with a borderless text area, dark send control, and audio control when idle;
+- glass-style composer and automation panels using the shared dark surface, border, radius, and blur treatment;
+- channel artwork and theme behavior prepared for the Saba v2 experience.
+
+These are presentation changes only. Existing navigation, chat actions, settings, and gateway behavior remain unchanged.
 
 ## Layout
 
