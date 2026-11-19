@@ -112,7 +112,7 @@ docker compose down
 
 - **Project adaptation and setup:** Mikiyas Zenebe
 - **Original Saba project and maintainers:** [mikilezen/saba](https://github.com/mikilezen/saba)
-- **Nanobot inspiration and open-source community:** [HKUDS/nanobot](https://github.com/HKUDS/nanobot)
+- **saba inspiration and open-source community:** [HKUDS/saba](https://github.com/HKUDS/saba)
 - **OpenClaw inspiration and open-source community:** [openclaw/openclaw](https://github.com/openclaw/openclaw)
 
 Saba is released under the MIT License. See [LICENSE](./LICENSE) for the complete license text. Please preserve upstream copyright and license notices when redistributing changes.
