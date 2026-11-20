@@ -59,9 +59,10 @@ python3.11 -m venv .venv
 
 The last command starts the gateway and opens the WebUI at `http://127.0.0.1:8765`.
 
-1. Open **Settings → Models**.
-2. Create a model preset and enter the provider credentials.
-3. Start a new topic and send `Hello!`.
+1. Open **Settings > Models**.
+2. Create or select a model preset.
+3. Enter the provider credential or configure a local OpenAI-compatible server.
+4. Start a new topic and send `Hello!`.
 
 Keep API keys and the browser sign-in link private.
 
