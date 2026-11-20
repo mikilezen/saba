@@ -5,10 +5,16 @@ __pycache__
 *.egg-info
 dist/
 build/
+coverage/
+htmlcov/
 saba/web/dist/
 .git
 .env
 .assets
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 node_modules/
 bridge/dist/
 workspace/
