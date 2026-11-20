@@ -1,3 +1,8 @@
+# Bubblewrap overlay for Docker Compose.
+# Run together with docker-compose.yml:
+# docker compose -f docker-compose.yml -f docker-compose.bwrap.yml up --build
+# Bubblewrap needs namespace administration capabilities and less restrictive
+# seccomp/AppArmor profiles. Use this overlay only for local trusted workspaces.
 x-bwrap-security: &bwrap-security
   cap_add:
     - SYS_ADMIN
