@@ -1,24 +1,52 @@
-# Working on saba
+# Saba Coding Agent Instructions
 
-The Python gateway owns agent execution, sessions, tools, memory, and security policy. WebUI and TUI share that runtime; keep execution and policy out of the clients.
+Use the agent name **Saba Coding Agent** in repository documentation and automated agent metadata.
 
-## Task-specific guidance
+Saba's Python gateway owns agent execution, sessions, tools, memory, provider integration, and security policy. WebUI and TUI are presentation and transport clients; do not move gateway policy or runtime state into either client.
 
-| When working on | Read |
+## Before changing code
+
+- Read the relevant project and component guidance before implementation.
+- Analyze the observable behavior, ownership boundaries, root cause, and affected contracts.
+- Preserve existing public behavior unless the request intentionally changes it.
+- Prefer the smallest complete fix over speculative fallbacks or broad rewrites.
+- Reuse established helpers, models, test fixtures, and patterns.
+- Do not add tests for impossible, unsupported, or nonexistent states.
+- Do not create a commit unless the user explicitly asks for one.
+
+## Required guidance
+
+| Area | Read |
 | --- | --- |
-| Core boundaries, extensions, or internal types | [`.agent/design.md`](.agent/design.md) |
-| Refactoring, fallbacks, or test selection | [`.agent/simplify.md`](.agent/simplify.md) |
-| User-facing copy, feature naming, or localization | [`.agent/copywriting.md`](.agent/copywriting.md) |
-| Path permissions, HTTP/MCP, or shell isolation | [`.agent/security.md`](.agent/security.md) |
-| Dependency setup, WebUI transport, config, Windows, prompts, or persistence | [`.agent/gotchas.md`](.agent/gotchas.md) |
-| Reusing verification evidence | [`.agent/workflow.md`](.agent/workflow.md) |
-| WebUI/host compatibility | [`.agent/review-guide.md`](.agent/review-guide.md) |
-| Contribution or publication | [`CONTRIBUTING.md`](CONTRIBUTING.md), [`docs/releasing.md`](docs/releasing.md) |
+| Ownership, abstractions, and dynamic types | [`.agent/design.md`](.agent/design.md) |
+| Simplification and verification evidence | [`.agent/simplify.md`](.agent/simplify.md), [`.agent/workflow.md`](.agent/workflow.md) |
+| User-facing copy and localization | [`.agent/copywriting.md`](.agent/copywriting.md) |
+| Security, permissions, and isolation | [`.agent/security.md`](.agent/security.md) |
+| Setup, Windows, configuration, prompts, and persistence | [`.agent/gotchas.md`](.agent/gotchas.md) |
+| WebUI-host compatibility | [`.agent/review-guide.md`](.agent/review-guide.md) |
 
-## Development constraints
+## Engineering rules
 
-- Analyze the required behavior, state ownership, and root cause before extending existing code. Refactor when the structure causes the problem; a smaller diff does not justify another fallback.
-- Do not add defensive tests for hypothetical internal states or unsupported combinations. Each new test needs a reachable path and a meaningful contract to protect.
-- Do not add tests merely to prove that nonexistent behavior, removed code, or obsolete symbols are absent. Negative assertions must exercise a concrete, reachable risk and protect an observable behavioral contract; prefer testing supported actions and their results.
-- Do not run `ruff format`; mechanical formatting obscures git blame and creates unrelated diffs. This constraint takes precedence over the optional touched-file formatting in `CONTRIBUTING.md`.
-- Do not manually wrap prose in Markdown files. Keep each paragraph on one source line; use line breaks only for Markdown structure.
+- Keep execution, state ownership, security primitives, and persistence independent of API, channel, CLI, and WebUI adapters.
+- Add capabilities through channels, tools, skills, or external MCP integrations when they fit there; keep the core loop small.
+- Type wire payloads, persisted records, and third-party SDK objects at their boundaries.
+- Preserve backward compatibility for protocol fields, session data, and persisted configuration.
+- Keep secrets in local environment variables or deployment secret managers. Never print, commit, or add real credentials to examples.
+- Keep official-source claims, consent gates, and sensitive-action approvals explicit.
+- Do not silently install, restart, revoke credentials, downgrade, or reset configuration.
+
+## Verification
+
+- Run the smallest test or check that covers the changed contract.
+- Rerun verification only when assumptions or dependencies change.
+- Use existing lint, type-check, build, and test commands.
+- Report failures, skipped checks, and inherited evidence clearly.
+- Never present planned support or fixture-only behavior as a completed real-world acceptance test.
+- Keep raw verification artifacts outside tracked source files.
+
+## Repository formatting
+
+- Follow existing file and naming conventions.
+- Do not run `ruff format`; it can create unrelated diffs and obscures git blame.
+- Do not manually wrap Markdown prose. Keep paragraphs on one source line; use line breaks only for Markdown structure.
+- Preserve existing behavior and avoid unrelated cleanup.
