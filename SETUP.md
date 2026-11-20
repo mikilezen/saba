@@ -9,10 +9,33 @@ This setup is intended for a clean local installation on Windows, macOS, or Linu
 - Python 3.11 or newer
 - Git
 - An API key or account for a supported AI model provider
+- `uv` for the locked, reproducible installation
 - Node.js and Bun only when developing the WebUI
 - Docker Desktop only when using Docker
 
+Use the locked installation below unless you specifically need an editable `pip` environment.
+
 ## Install and run
+
+### Recommended: locked dependencies with uv
+
+Run these commands from the directory that contains `pyproject.toml`.
+
+#### Windows PowerShell
+
+```powershell
+uv sync
+.\.venv\Scripts\saba.exe webui
+```
+
+#### macOS or Linux
+
+```bash
+uv sync
+./.venv/bin/saba webui
+```
+
+### Editable pip installation
 
 From the directory that contains `pyproject.toml`:
 
