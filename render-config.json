@@ -12,7 +12,8 @@
   },
   "gateway": {
     "host": "127.0.0.1",
-    "port": 18790
+    "port": 18790,
+    "apiKey": "${SABA_API_KEY}"
   },
   "channels": {
     "websocket": {

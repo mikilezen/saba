@@ -23,9 +23,14 @@ services:
     plan: starter
     healthCheckPath: /
     envVars:
+      - key: RENDER
+        value: "true"
       # Anthropic API key — powers the agent's LLM calls. Get one at
       # https://console.anthropic.com/settings/keys
       - key: ANTHROPIC_API_KEY
+        sync: false
+      # Optional gateway API key — also used by clients that call the local API.
+      - key: SABA_API_KEY
         sync: false
       # WebUI access secret — the gate for the public WebUI. Generate a strong
       # random value (e.g. `openssl rand -hex 32`) and keep it private.
