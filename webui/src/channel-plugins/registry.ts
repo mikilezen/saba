@@ -32,7 +32,7 @@ const PHONE_CHANNEL_PRESENTATIONS: Record<string, ChannelUiContribution["present
     displayName: "SMS & Messages",
     initials: "SM",
     color: "#E8A317",
-    logoUrl: "/brand/call.png",
+    logoUrl: "/brand/call.pcang",
     logoLayout: "tile",
   },
   ussd: {
