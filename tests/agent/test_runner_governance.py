@@ -226,40 +226,48 @@ async def test_runner_summarizes_history_and_preserves_current_input(monkeypatch
     assert any(message.get("content") == old_answer for message in result.messages)
 
 
-async def test_runner_rejects_oversized_delta_without_summarizable_history(monkeypatch):
+async def test_runner_compacts_oversized_initial_message(monkeypatch):
     provider = MagicMock(spec=LLMProvider)
-    provider.chat_stream_with_retry = AsyncMock()
+    provider.chat_stream_with_retry = AsyncMock(return_value=LLMResponse(content="done"))
     tools = MagicMock()
     tools.get_definitions.return_value = []
     monkeypatch.setattr(
         "saba.agent.context_governance.estimate_prompt_tokens_chain",
-        lambda *_args, **_kwargs: (600, "test-counter"),
+        lambda _provider, _model, messages, _tools: (
+            (600, "test-counter")
+            if any(message.get("content") == "current input is the entire oversized delta" for message in messages)
+            else (100, "test-counter")
+        ),
     )
-    consolidate = AsyncMock(return_value=None)
+    consolidate = AsyncMock(return_value="compact initial task")
 
-    with pytest.raises(ContextWindowExceededError):
-        await AgentRunner().run(make_run_spec(
-            provider,
-            initial_messages=None,
-            transcript_input=TranscriptInput(
-                history=[],
-                current_message="current input is the entire oversized delta",
-            ),
-            transcript_builder=_build_transcript,
-            consolidate_history=consolidate,
-            tools=tools,
-            model="test-model",
-            context_window_tokens=1_624,
-            max_tokens=100,
-            max_iterations=1,
-            max_tool_result_chars=_MAX_TOOL_RESULT_CHARS,
-        ))
+    result = await AgentRunner().run(make_run_spec(
+        provider,
+        initial_messages=None,
+        transcript_input=TranscriptInput(
+            history=[],
+            current_message="current input is the entire oversized delta",
+        ),
+        transcript_builder=_build_transcript,
+        consolidate_history=consolidate,
+        tools=tools,
+        model="test-model",
+        context_window_tokens=1_624,
+        max_tokens=100,
+        max_iterations=1,
+        max_tool_result_chars=_MAX_TOOL_RESULT_CHARS,
+    ))
 
     consolidate.assert_awaited_once_with(
-        [{"role": "system", "content": "system"}],
+        [
+            {"role": "system", "content": "system"},
+            {"role": "user", "content": "current input is the entire oversized delta"},
+        ],
         None,
     )
-    provider.chat_stream_with_retry.assert_not_awaited()
+    provider.chat_stream_with_retry.assert_awaited_once()
+    assert result.summary_checkpoint is not None
+    assert result.summary_checkpoint.transcript_boundary == 2
 
 
 async def test_runner_governs_history_before_summarizing_it(monkeypatch):

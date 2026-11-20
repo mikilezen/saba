@@ -158,6 +158,10 @@ class ContextCompactionState:
         """Build the raw transcript and its initial H/delta boundary."""
         messages = list(transcript_builder(transcript_input))
         accepted_history_boundary = 1 + len(transcript_input.history)
+        if not transcript_input.history and transcript_input.current_message is not None:
+            # There is no accepted history to summarize before the first request,
+            # so include the current message in the initial compaction boundary.
+            accepted_history_boundary = len(messages)
 
         def build_summary_transcript(summary: str) -> list[dict[str, Any]]:
             return transcript_builder(
