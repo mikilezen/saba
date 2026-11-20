@@ -2,6 +2,20 @@
 
 Telegram-first app for helping people navigate Ethiopian government services. This separately deployable Saba ET app lives beside the Saba agent framework in the saba_et package.
 
+## Architecture
+
+Saba ET separates channel delivery, conversation workflow, local data, and optional external services:
+
+- **Channel adapters** accept Telegram or webhook updates and convert them into typed application messages.
+- **Application workflow** handles language selection, consent, profile data, service discovery, task state, and approval gates.
+- **Domain models** represent services, providers, sources, outgoing messages, and task outcomes.
+- **Knowledge and provider directories** provide curated local service and official-portal data.
+- **LangGraph agent** performs read-only catalog/provider checks and grounded public-source search, with deterministic risk and approval rules.
+- **Persistence** uses SQLite locally and Supabase Postgres when `SUPABASE_DB_URL` is configured.
+- **Optional integrations** include Gemini search, SearchAPI, Vapi, Telnyx, and browser-rendered public-service review.
+
+Channel adapters must not duplicate risk, consent, source-validation, or profile rules. Those decisions belong in the shared application and domain workflow.
+
 ## Current slice
 
 - Telegram long polling locally and a signed-webhook ASGI entry point for Render, with an interactive language picker for Amharic, Afaan Oromoo, Tigrinya, and English.
