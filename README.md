@@ -1,8 +1,8 @@
 # Saba AI
 
-Saba is a self-hosted AI assistant. It gives you one place to chat with an AI model, work with files, use approved tools, remember useful context, and connect chat channels.
+Saba is a self-hosted AI assistant for chat, file work, approved tools, persistent context, and connected chat channels. The gateway runs locally or on a server while the WebUI and TUI provide client interfaces.
 
-Saba runs on your computer or server. You choose the AI provider, the model, the files it can access, and the tools it can use.
+You control the AI provider, model, accessible files, enabled tools, and channel connections.
 
 <p align="center">
   <img src="./images/photo.png" alt="Saba AI" width="380">
@@ -92,11 +92,11 @@ The Skills screen lists available task skills with short descriptions and exampl
 
 | Goal | Use |
 | --- | --- |
-| Just use Saba locally | `uv sync`, then `saba webui` |
-| Install without uv | Python virtual environment and `pip install -e .` |
-| Change React/TypeScript WebUI code | `bun install`, then `bun run dev` |
-| Run in a repeatable container | Docker Compose |
-| Test the browser UI | Playwright plus the Chromium install command below |
+| Run Saba locally | Frozen Python dependencies with `uv` |
+| Install without uv | A Python virtual environment and `pip install -e .` |
+| Develop the React/TypeScript WebUI | Bun and Vite |
+| Run reproducible containers | Docker Compose |
+| Test the browser UI | Bun, Playwright, and Chromium |
 
 For most users, use **Quick install with frozen dependencies**. Use the other sections only when you need them.
 
@@ -111,7 +111,7 @@ For most users, use **Quick install with frozen dependencies**. Use the other se
 
 ## Quick install with frozen dependencies
 
-Run these commands from the directory containing `pyproject.toml`.
+Run the commands for your operating system from the directory containing `pyproject.toml`.
 
 ### Windows PowerShell
 
@@ -135,9 +135,12 @@ The WebUI opens at:
 http://127.0.0.1:8765
 ```
 
-1. Open **Settings → Models**.
-2. Create a model preset and enter the provider credentials.
-3. Start a new topic and send `Hello!`.
+On first launch:
+
+1. Open **Settings > Models**.
+2. Create or select a model preset.
+3. Enter the provider credential or configure a local OpenAI-compatible server.
+4. Start a new topic and send `Hello!`.
 
 Keep API keys and browser sign-in links private.
 
