@@ -43,6 +43,13 @@ The native client accepts bare WebSocket chat IDs or `websocket:<id>` selectors.
 
 Sessions are live across clients: if two terminals or the WebUI attach to the same session, an accepted user message and the resulting agent/tool stream appear on every attached client while the gateway executes the input only once.
 
+## Development workflow
+
+Run `bun run --cwd tui check` for TypeScript validation, `bun run --cwd tui
+check:imports` for client-boundary checks, and `bun run --cwd tui test` for
+unit and component tests. Use `bun run --cwd tui build` to verify the
+production bundle.
+
 `/branch` creates a new saved conversation from a completed reply without changing the source session. The picker uses durable history indices, so paginated transcripts branch at the selected turn rather than the currently visible row.
 
 `/context` explains the session-owned material available for the next agent turn: the compacted summary, replayable raw suffix, and an estimated token count. It deliberately does not expose private reasoning and does not pretend to be the complete model prompt; workspace instructions, memory, and skills are assembled separately by the Python runtime.
