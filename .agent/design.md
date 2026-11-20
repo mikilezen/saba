@@ -2,6 +2,10 @@
 
 Consult this document when changing ownership boundaries, extension points, abstractions, or dynamic types. These constraints apply to implementation choices on those paths.
 
+## Current design style
+
+Prefer a modern, clear, and consistent design over novelty. Keep interfaces focused, responsive, accessible, and easy to scan; reuse established patterns, provide clear states and feedback, and avoid unnecessary visual or architectural complexity.
+
 ## Core stays small; extend at the edges
 
 New capabilities should be added via `channels/`, `tools/`, skills, or MCP servers. The files `agent/loop.py` and `agent/runner.py` form the critical core path; changes there should be minimal and justified. If a feature can live in a channel adapter, a tool, or an external MCP server, it should not be inlined into the agent loop.
