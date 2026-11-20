@@ -84,10 +84,12 @@ class WebUIBuildHook(BuildHookInterface):
         from saba.build_info import read_commit
 
         commit = read_commit(root)
+        commit_file = root / "saba" / "_build_commit.txt"
         if commit:
-            commit_file = root / "saba" / "_build_commit.txt"
             commit_file.write_text(commit + "\n", encoding="utf-8")
             build_data.setdefault("force_include", {})[str(commit_file)] = "saba/_build_commit.txt"
+        elif commit_file.is_file():
+            commit_file.unlink()
 
         if os.environ.get("SABA_SKIP_WEBUI_BUILD") == "1":
             self.app.display_info("[webui-build] skipped via SABA_SKIP_WEBUI_BUILD=1")
