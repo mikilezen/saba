@@ -1,5 +1,7 @@
 {
   "version": 1,
+  "lockType": "skill-dependencies",
+  "pinning": "source-and-content-hash",
   "skills": {
     "gemini-api-dev": {
       "source": "google-gemini/gemini-skills",
