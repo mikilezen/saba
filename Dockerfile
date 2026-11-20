@@ -11,6 +11,9 @@ RUN mkdir -p /app/saba/web && npm run build
 
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
+LABEL org.opencontainers.image.title="Saba application"
+LABEL org.opencontainers.image.description="Saba agent gateway and WebUI container"
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates curl git bubblewrap openssh-client libmagic1 && \
     rm -rf /var/lib/apt/lists/*
@@ -72,6 +75,7 @@ ENV HOME=/home/saba
 # Ensure crash output reaches Render logs (app output is otherwise swallowed on
 # non-graceful exit).
 ENV PYTHONUNBUFFERED=1 PYTHONFAULTHANDLER=1
+STOPSIGNAL SIGTERM
 
 # Gateway health endpoint and optional WebUI/WebSocket channel ports
 EXPOSE 18790 8765
