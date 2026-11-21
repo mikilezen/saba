@@ -451,7 +451,7 @@ describe("AgentActivityCluster", () => {
               call_id: "call-edit",
               tool: "edit_file",
               path: "src/app.tsx",
-              absolute_path: "/Users/renxubin/project/src/app.tsx",
+              absolute_path: "/Users/mikiyaszenebe/project/src/app.tsx",
               phase: "end",
               added: 12,
               deleted: 3,
@@ -469,7 +469,7 @@ describe("AgentActivityCluster", () => {
       expect(screen.queryByText("Edited files")).not.toBeInTheDocument();
       const fileRef = screen.getByTestId("activity-file-reference");
       expect(fileRef).toHaveTextContent("src/app.tsx");
-      expect(fileRef).toHaveAttribute("aria-label", "/Users/renxubin/project/src/app.tsx");
+      expect(fileRef).toHaveAttribute("aria-label", "/Users/mikiyaszenebe/project/src/app.tsx");
       expect(screen.queryByTestId("file-edit-diff")).not.toBeInTheDocument();
       for (const diffPair of screen.getAllByTestId("activity-diff-pair")) {
         expect(diffPair).toHaveClass("items-baseline");
@@ -1030,7 +1030,7 @@ describe("AgentActivityCluster", () => {
             call_id: "call-patch",
             tool: "apply_patch",
             path: "src/app.tsx",
-            absolute_path: "/Users/renxubin/project/src/app.tsx",
+            absolute_path: "/Users/mikiyaszenebe/project/src/app.tsx",
             phase: "end",
             added: 12,
             deleted: 3,
@@ -1911,13 +1911,13 @@ describe("AgentActivityCluster", () => {
           fileEdits: [{
             call_id: "call-write",
             tool: "write_file",
-            path: "/Users/renxubin/.saba/workspace/agent-research-video/composition.html",
+            path: "/Users/mikiyaszenebe/.saba/workspace/agent-research-video/composition.html",
             phase: "error",
             added: 0,
             deleted: 0,
             approximate: false,
             status: "error",
-            error: "Error writing file: [Errno 13] Permission denied: '/Users/renxubin'",
+            error: "Error writing file: [Errno 13] Permission denied: '/Users/mikiyaszenebe'",
           }],
           createdAt: 3,
         })}

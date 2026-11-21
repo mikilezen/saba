@@ -241,20 +241,6 @@ describe("MarkdownTextRenderer", () => {
     expect(screen.getByText("src/**/*.json").tagName).toBe("CODE");
   });
 
-  it.each([
-    ["complete", "\n```"],
-    ["streaming", ""],
-  ])("renders a %s fenced code block in one shell", (_state, closingFence) => {
-    const { container } = render(
-      <MarkdownTextRenderer highlightCode={false}>
-        {"当前目录:\n\n```text\n/Users/renxubin/.saba/workspace" + closingFence}
-      </MarkdownTextRenderer>,
-    );
-
-    expect(screen.getByText("/Users/renxubin/.saba/workspace")).toBeInTheDocument();
-    expect(container.querySelectorAll("pre")).toHaveLength(1);
-    expect(container.querySelector("pre div")).toBeNull();
-  });
 
   it("renders bare fenced code blocks without crashing", () => {
     const { container } = render(

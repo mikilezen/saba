@@ -1183,7 +1183,7 @@ describe("MessageBubble", () => {
       id: "a-file-path",
       role: "assistant",
       content:
-        "改动在 `webui/src/components/MarkdownTextRenderer.tsx` 和 `/Users/renxubin/.saba/workspace/minecraft-fps/index.html`。",
+        "改动在 `webui/src/components/MarkdownTextRenderer.tsx` 和 `/Users/mikiyaszenebe/.saba/workspace/minecraft-fps/index.html`。",
       createdAt: Date.now(),
     };
 
@@ -1199,11 +1199,11 @@ describe("MessageBubble", () => {
       expect(references[0]).toHaveTextContent("MarkdownTextRenderer.tsx");
       expect(references[0]).not.toHaveTextContent("webui/src/components");
       expect(screen.getByText("index.html")).toBeInTheDocument();
-      expect(references[1]).not.toHaveTextContent("/Users/renxubin");
+      expect(references[1]).not.toHaveTextContent("/Users/mikiyaszenebe");
       expect(references[1]).not.toHaveAttribute("title");
       expect(references[1]).toHaveAttribute(
         "aria-label",
-        "/Users/renxubin/.saba/workspace/minecraft-fps/index.html",
+        "/Users/mikiyaszenebe/.saba/workspace/minecraft-fps/index.html",
       );
 
       vi.useFakeTimers();
@@ -1213,7 +1213,7 @@ describe("MessageBubble", () => {
       });
       const tooltip = screen.getByRole("tooltip");
       expect(tooltip).toHaveTextContent(
-        "/Users/renxubin/.saba/workspace/minecraft-fps/index.html",
+        "/Users/mikiyaszenebe/.saba/workspace/minecraft-fps/index.html",
       );
     } finally {
       vi.useRealTimers();

@@ -27,7 +27,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
 const header = () => screen.getByRole("button", { name: /^Member access/ });
-const xubin = () => screen.getByRole("switch", { name: "Allow mikiyas zenebe to use saba" });
+const mikiyasZenebe = () => screen.getByRole("switch", { name: "Allow mikiyas zenebe to use saba" });
 const yongru = () => screen.getByRole("switch", { name: "Allow Yongru to use saba" });
 const refresh = () => fireEvent.click(screen.getByRole("button", { name: "Refresh members" }));
 
@@ -79,7 +79,7 @@ describe("Linear member access", () => {
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(screen.queryByText(/Core|Desktop/)).not.toBeInTheDocument();
     expect(requestMutation).toHaveBeenCalledTimes(1);
-    expect(xubin()).toBeChecked();
+    expect(mikiyasZenebe()).toBeChecked();
     expect(yongru()).not.toBeChecked();
     expect(screen.getAllByRole("switch")).toHaveLength(2);
   });
@@ -91,8 +91,8 @@ describe("Linear member access", () => {
     ] });
     await openMembers();
     const search = screen.getByRole("textbox", { name: "Search members" });
-    fireEvent.change(search, { target: { value: " xubin " } });
-    expect(xubin()).toBeVisible();
+    fireEvent.change(search, { target: { value: " mikiyas zenebe " } });
+    expect(mikiyasZenebe()).toBeVisible();
     expect(screen.getAllByRole("switch")).toHaveLength(1);
     fireEvent.change(search, { target: { value: "u2" } });
     expect(yongru()).toBeVisible();
@@ -143,7 +143,7 @@ describe("Linear member access", () => {
   it("shows permissions, a summary and short guidance; details are available on demand", async () => {
     await openMembers();
     expect(yongru()).not.toBeChecked();
-    expect(xubin()).toBeChecked();
+    expect(mikiyasZenebe()).toBeChecked();
     expect(header()).not.toHaveTextContent("1 enabled");
     fireEvent.click(header());
     expect(header()).toHaveTextContent("1 enabled");
@@ -219,7 +219,7 @@ describe("Linear member access", () => {
     fireEvent.click(yongru());
     expect(yongru()).toBeDisabled();
     expect(yongru()).not.toBeChecked();
-    expect(xubin()).toBeEnabled();
+    expect(mikiyasZenebe()).toBeEnabled();
     expect(header()).toBeEnabled();
     expect(screen.getByText("Saving…")).toBeVisible();
     expect(requestMutation).toHaveBeenLastCalledWith("settings.channel.connect.start", {
@@ -237,7 +237,7 @@ describe("Linear member access", () => {
     const grant = deferNextRequest();
     fireEvent.click(yongru());
     const revoke = deferNextRequest();
-    fireEvent.click(xubin());
+    fireEvent.click(mikiyasZenebe());
     await act(async () => revoke.resolve({ ...roster, members: [{ ...roster.members[0], allowed: false }] }));
     expect(xubin()).not.toBeChecked();
     expect(xubin()).toBeEnabled();
@@ -317,7 +317,7 @@ describe("Linear member access", () => {
     requestMutation.mockRejectedValueOnce(new Error("Linear unavailable"));
     refresh();
     expect(await screen.findByRole("alert")).toHaveTextContent("Linear unavailable");
-    expect(xubin()).toBeChecked();
+    expect(mikiyasZenebe()).toBeChecked();
     expect(yongru()).toBeEnabled();
   });
 
