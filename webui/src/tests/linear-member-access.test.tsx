@@ -137,7 +137,7 @@ describe("Linear member access", () => {
     requestMutation.mockResolvedValue({ ...roster, members: roster.members.map(member => ({ ...member, avatar_url })) });
     const view = await openMembers();
     expect(view.container.querySelector("img")).toBeNull();
-    expect(xubin()).toBeEnabled();
+    expect(mikiyasZenebe()).toBeEnabled();
   });
 
   it("shows permissions, a summary and short guidance; details are available on demand", async () => {
@@ -229,7 +229,7 @@ describe("Linear member access", () => {
     expect(yongru()).toBeChecked();
     expect(yongru()).toBeEnabled();
     expect(screen.getByText("Saved")).toBeVisible();
-    expect(xubin()).toBeChecked();
+    expect(mikiyasZenebe()).toBeChecked();
   });
 
   it("handles concurrent member saves completing in reverse order", async () => {
@@ -239,11 +239,11 @@ describe("Linear member access", () => {
     const revoke = deferNextRequest();
     fireEvent.click(mikiyasZenebe());
     await act(async () => revoke.resolve({ ...roster, members: [{ ...roster.members[0], allowed: false }] }));
-    expect(xubin()).not.toBeChecked();
-    expect(xubin()).toBeEnabled();
+    expect(mikiyasZenebe()).not.toBeChecked();
+    expect(mikiyasZenebe()).toBeEnabled();
     expect(yongru()).toBeDisabled();
     await act(async () => grant.resolve({ ...roster, members: [{ ...roster.members[1], allowed: true }] }));
-    expect(xubin()).not.toBeChecked();
+    expect(mikiyasZenebe()).not.toBeChecked();
     expect(yongru()).toBeChecked();
     expect(screen.getAllByText("Saved")).toHaveLength(2);
   });
@@ -283,7 +283,7 @@ describe("Linear member access", () => {
     expect(yongru()).not.toBeChecked();
     expect(yongru()).toBeDisabled();
     expect(yongru()).toHaveAccessibleDescription(/Refresh members/);
-    expect(xubin()).toBeEnabled();
+    expect(mikiyasZenebe()).toBeEnabled();
     expect(screen.queryByText("Saved")).not.toBeInTheDocument();
     requestMutation.mockResolvedValueOnce({
       ...roster, members: roster.members.map((member) => ({ ...member, allowed: true })),
@@ -334,7 +334,7 @@ describe("Linear member access", () => {
     await act(async () => oldSave.resolve({ ...roster, members: [{ ...roster.members[1], allowed: true }] }));
     expect(screen.queryByRole("switch")).not.toBeInTheDocument();
     await act(async () => nextRead.resolve({ ...roster, organization_id: organizationId, members: [roster.members[0]] }));
-    expect(xubin()).toBeVisible();
+    expect(mikiyasZenebe()).toBeVisible();
     expect(screen.queryByRole("switch", { name: "Allow Yongru to use saba" })).not.toBeInTheDocument();
   });
 

@@ -5,7 +5,7 @@ Saba is a self-hosted AI assistant for chat, file work, approved tools, persiste
 You control the AI provider, model, accessible files, enabled tools, and channel connections.
 
 <p align="center">
-  <img src="./images/photo.png" alt="Saba AI" width="380">
+  <img src="./images/logo.png" alt="Saba AI" width="380">
 </p>
 <!-- 
 <p align="center">
