@@ -2455,7 +2455,7 @@ def test_enable_optional_feature_refreshes_feishu_identity(
         feishu_module,
         "fetch_feishu_app_identity",
         lambda *_args: {
-            "displayName": "Xubin Ren的智能助手",
+            "displayName": "mikiyas zenebe的智能助手",
             "avatarUrl": "https://example.com/assistant.png",
             "identityFetchedAt": "2026-07-06T00:00:00Z",
         },
@@ -2464,12 +2464,12 @@ def test_enable_optional_feature_refreshes_feishu_identity(
     payload = enable_optional_feature("feishu", config_path=config_path)
 
     instance = payload["features"][0]["instances"][0]
-    assert instance["display_name"] == "Xubin Ren的智能助手"
+    assert instance["display_name"] == "mikiyas zenebe的智能助手"
     assert instance["avatar_url"] == "https://example.com/assistant.png"
 
     data = json.loads(config_path.read_text(encoding="utf-8"))
     saved = data["channels"]["feishu"]["instances"][0]
-    assert saved["displayName"] == "Xubin Ren的智能助手"
+    assert saved["displayName"] == "mikiyas zenebe的智能助手"
     assert saved["avatarUrl"] == "https://example.com/assistant.png"
     assert saved["identityFetchedAt"] == "2026-07-06T00:00:00Z"
 

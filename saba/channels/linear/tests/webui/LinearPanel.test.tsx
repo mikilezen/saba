@@ -854,7 +854,7 @@ describe("Linear channel UI", () => {
     mockFeature({ ...savedFeature(), enabled: true, running: true, runtime_status: "running" });
     requestMutationMock.mockImplementation(async (_method, params) => params.operation === "members"
       ? { session_id: "", status: "members", organization_id: "org-1", legacy_allow_all: false,
-        members: [{ id: "u1", name: "Xubin", teams: ["saba"], allowed: true }] }
+        members: [{ id: "u1", name: "mikiyas zenebe", teams: ["saba"], allowed: true }] }
       : { session_id: "", status: "inspected", installations: [
         { organization_id: "org-1", organization_name: "saba", authorization_status: "authorized" },
       ] });
@@ -864,7 +864,7 @@ describe("Linear channel UI", () => {
     await waitFor(() => expect(workspace.querySelector("img")).toHaveAttribute("src", "https://uploads.linear.app/org-1/logo"));
     expect(within(workspace).queryByRole("button", { name: /team/i })).not.toBeInTheDocument();
     fireEvent.click(within(workspace).getByRole("button", { name: "Member access" }));
-    expect(await within(workspace).findByRole("switch", { name: "Allow Xubin to use saba" })).toBeVisible();
+    expect(await within(workspace).findByRole("switch", { name: "Allow mikiyas zenebe to use saba" })).toBeVisible();
     expect(within(workspace).getAllByRole("switch")).toHaveLength(1);
     expect(within(workspace).queryByRole("combobox")).not.toBeInTheDocument();
     expect(requestMutationMock.mock.calls.some(([, params]) => params.operation === "member_access")).toBe(false);
@@ -876,7 +876,7 @@ describe("Linear channel UI", () => {
       if (params.operation === "members") return {
         session_id: "", status: "members", organization_id: params.organization_id,
         legacy_allow_all: false,
-        members: [{ id: "u1", name: "Xubin", teams: ["saba"], allowed: true }],
+        members: [{ id: "u1", name: "mikiyas zenebe", teams: ["saba"], allowed: true }],
       };
       return { session_id: "", status: "inspected", installations: [
         { organization_id: "org-1", organization_name: "saba", authorization_status: "authorized" },
@@ -888,7 +888,7 @@ describe("Linear channel UI", () => {
     const workspace = await screen.findByRole("article", { name: "saba" });
     const other = screen.getByRole("article", { name: "Design workspace" });
     fireEvent.click(within(workspace).getByRole("button", { name: "Member access" }));
-    expect(await within(workspace).findByRole("switch", { name: "Allow Xubin to use saba" })).toBeVisible();
+    expect(await within(workspace).findByRole("switch", { name: "Allow mikiyas zenebe to use saba" })).toBeVisible();
     expect(within(other).getByRole("button", { name: "Member access" })).toHaveAttribute("aria-expanded", "false");
     expect(within(other).queryByRole("switch")).not.toBeInTheDocument();
     expect(requestMutationMock).toHaveBeenCalledWith("settings.channel.connect.start", {

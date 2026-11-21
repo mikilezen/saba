@@ -14,7 +14,7 @@ vi.mock("@/providers/ClientProvider", () => ({ useClient: () => context }));
 const roster: LinearMembersPayload = {
   session_id: "", status: "members", organization_id: "org-1", legacy_allow_all: false,
   members: [
-    { id: "u1", name: "Xubin", teams: ["saba"], allowed: true },
+    { id: "u1", name: "mikiyas zenebe", teams: ["saba"], allowed: true },
     { id: "u2", name: "Yongru", teams: ["saba"], allowed: false },
   ],
 };
@@ -27,7 +27,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
 const header = () => screen.getByRole("button", { name: /^Member access/ });
-const xubin = () => screen.getByRole("switch", { name: "Allow Xubin to use saba" });
+const xubin = () => screen.getByRole("switch", { name: "Allow mikiyas zenebe to use saba" });
 const yongru = () => screen.getByRole("switch", { name: "Allow Yongru to use saba" });
 const refresh = () => fireEvent.click(screen.getByRole("button", { name: "Refresh members" }));
 
@@ -156,7 +156,7 @@ describe("Linear member access", () => {
     fireEvent.click(screen.getByRole("button", { name: "About member access" }));
     expect(await screen.findByRole("tooltip")).toHaveTextContent("does not grant access");
     fireEvent.change(screen.getByRole("textbox", { name: "Search members" }), { target: { value: "yong" } });
-    expect(screen.queryByRole("switch", { name: "Allow Xubin to use saba" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("switch", { name: "Allow mikiyas zenebe to use saba" })).not.toBeInTheDocument();
     expect(yongru()).toBeVisible();
   });
 

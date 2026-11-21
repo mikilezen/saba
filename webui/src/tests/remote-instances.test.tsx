@@ -62,7 +62,7 @@ beforeEach(async () => {
   window.sessionStorage.clear(); window.localStorage.clear();
   window.history.replaceState(null, "", "#/new");
   mocks.onStatus.mockReset().mockImplementation((handler) => { handler("open"); return () => {}; });
-  mocks.read.mockReset().mockResolvedValue({ available: true, machine_name: "Xubin-Mac", profiles: [profile] });
+  mocks.read.mockReset().mockResolvedValue({ available: true, machine_name: "mikiyas zenebe-Mac", profiles: [profile] });
   mocks.discover.mockReset().mockResolvedValue({ hosts: [], files: [], incomplete: false });
   mocks.inspect.mockReset().mockResolvedValue({ hostname: "team-host", candidates: [{ config_path: "~/.saba/config.json", runtime_user: "", service: "" }], incomplete: false });
   mocks.request.mockReset().mockImplementation(async (action: string) => {
@@ -317,7 +317,7 @@ describe("remote instance UX", () => {
     expect(current).toHaveAttribute("aria-current", "true");
     expect(within(current).getByRole("status")).toHaveTextContent("Connected");
     expect(within(current).getByRole("status").querySelector(".bg-emerald-500")).not.toBeNull();
-    expect(within(panel).getByRole("button", { name: "Local saba Xubin-Mac" })).not.toHaveAttribute("aria-current");
+    expect(within(panel).getByRole("button", { name: "Local saba mikiyas zenebe-Mac" })).not.toHaveAttribute("aria-current");
     expect(readSelectedRemote()?.id).toBe(profile.id);
     expect(window.location.hash).toBe(originalHash);
     expect(document.title).toBe(originalTitle);
@@ -363,7 +363,7 @@ describe("remote instance UX", () => {
     await chooseHost("Team server ubuntu@example.test");
     const frame = await readyRemote();
     await openDirectory();
-    fireEvent.click(screen.getByRole("button", { name: "Local saba Xubin-Mac" }));
+    fireEvent.click(screen.getByRole("button", { name: "Local saba mikiyas zenebe-Mac" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(readSelectedRemote()).toBeNull();
     expect(screen.getByText("Local conversations")).toBeVisible();
@@ -467,7 +467,7 @@ describe("remote instance UX", () => {
     expect(mocks.request).not.toHaveBeenCalled();
   });
   it("warns about live views before forgetting but cancellation does not disconnect", async () => {
-    mocks.read.mockResolvedValue({ available: true, machine_name: "Xubin-Mac", profiles: [{ ...profile, connected: true }] });
+    mocks.read.mockResolvedValue({ available: true, machine_name: "mikiyas zenebe-Mac", profiles: [{ ...profile, connected: true }] });
     view(false, true);
     fireEvent.pointerDown(await screen.findByRole("button", { name: "Manage Team server" }), { button: 0, ctrlKey: false });
     fireEvent.click(await screen.findByRole("menuitem", { name: "Remove connection" }));
@@ -711,7 +711,7 @@ describe("remote instance UX", () => {
     const switcher = await screen.findByRole("button", { name: "Switch host" });
     expect(screen.queryByRole("button", { name: "Remote connections" })).not.toBeInTheDocument();
     expect(switcher).toHaveClass("w-8", "h-8");
-    expect(within(switcher).getByRole("status")).toHaveTextContent("Xubin-Mac");
+    expect(within(switcher).getByRole("status")).toHaveTextContent("mikiyas zenebe-Mac");
     await openDirectory();
   });
 
@@ -734,7 +734,7 @@ describe("remote instance UX", () => {
     expect(screen.queryByTestId("legacy-host-footer")).not.toBeInTheDocument();
     message({ type: "open", anchor: { left: 40, top: 500, width: 150, height: 32 } });
     expect(await screen.findByRole("menu")).toHaveAttribute("data-side", "top");
-    fireEvent.click(screen.getByRole("menuitem", { name: "Local saba Xubin-Mac" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Local saba mikiyas zenebe-Mac" }));
     await waitFor(() => expect(screen.getByText("Local conversations")).toBeVisible());
     expect(frame).toBeInTheDocument();
     expect(mocks.request.mock.calls.some(([action]) => action === "remote.disconnect")).toBe(false);
@@ -816,7 +816,7 @@ describe("remote instance UX", () => {
     view(); await openDirectory();
     fireEvent.click(screen.getByRole("button", { name: "Team server ubuntu@example.test" }));
     await readyRemote();
-    await chooseHost("Local saba Xubin-Mac");
+    await chooseHost("Local saba mikiyas zenebe-Mac");
     expect(screen.getByText("Local conversations")).toBeVisible();
     expect(mocks.request.mock.calls.some(([action]) => action === "remote.disconnect")).toBe(false);
     expect(readSelectedRemote()).toBeNull();
@@ -838,7 +838,7 @@ describe("remote instance UX", () => {
     fireEvent.keyDown(screen.getByRole("button", { name: "Switch host" }), { key: "b", metaKey: true });
     expect(shortcut).not.toHaveBeenCalled();
     window.removeEventListener("keydown", shortcut);
-    await chooseHost("Local saba Xubin-Mac");
+    await chooseHost("Local saba mikiyas zenebe-Mac");
     await waitFor(() => expect(draft).toHaveFocus());
     expect(screen.getByRole("textbox", { name: "Local draft" })).toBe(draft);
     expect(draft).toHaveValue("Unsent local draft");
@@ -851,7 +851,7 @@ describe("remote instance UX", () => {
     view(); await openDirectory();
     fireEvent.click(screen.getByRole("button", { name: "Team server ubuntu@example.test" }));
     await readyRemote();
-    await chooseHost("Local saba Xubin-Mac");
+    await chooseHost("Local saba mikiyas zenebe-Mac");
     await openDirectory();
     fireEvent.pointerDown(screen.getByRole("button", { name: "Manage Team server" }), { button: 0, ctrlKey: false });
     fireEvent.click(await screen.findByRole("menuitem", { name: "Disconnect" }));
@@ -1050,7 +1050,7 @@ describe("remote instance UX", () => {
     fireEvent.change(screen.getByRole("textbox", { name: "SSH address" }), { target: { value: profile.host } });
     fireEvent.click(screen.getByRole("button", { name: "Connect" }));
     await readyRemote();
-    await chooseHost("Local saba Xubin-Mac");
+    await chooseHost("Local saba mikiyas zenebe-Mac");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByText("Local conversations")).toBeVisible();
   });
@@ -1201,11 +1201,11 @@ describe("remote instance UX", () => {
     view();
     const identity = await screen.findByRole("button", { name: "Switch host" });
     expect(identity).toHaveTextContent("Local");
-    expect(within(identity).getByRole("status")).toHaveTextContent("Xubin-Mac");
+    expect(within(identity).getByRole("status")).toHaveTextContent("mikiyas zenebe-Mac");
     expect(screen.getByRole("navigation", { name: "Sidebar navigation" })).toContainElement(identity);
     expect(document.querySelector("header")).toBeNull();
     fireEvent.pointerDown(identity, { button: 0, ctrlKey: false });
-    expect(await screen.findByRole("menuitem", { name: "Local saba Xubin-Mac" })).toBeVisible();
+    expect(await screen.findByRole("menuitem", { name: "Local saba mikiyas zenebe-Mac" })).toBeVisible();
     expect(screen.getByRole("menuitem", { name: "Manage connections" })).toBeVisible();
   });
 

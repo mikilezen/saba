@@ -6,7 +6,7 @@ readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "Xubin Ren"},
+    {name = "mikiyas zenebe"},
     {name = "the saba contributors"},
     {name = "the Saba contributors"}
 ]
