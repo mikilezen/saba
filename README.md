@@ -1,8 +1,8 @@
-# Saba AI
+# Saba AI — Your Self-Hosted AI Assistant
 
-Saba is a self-hosted AI assistant for chat, file work, approved tools, persistent context, and connected chat channels. The gateway runs locally or on a server while the WebUI and TUI provide client interfaces.
+Bring your AI models, tools, and chat channels together in one self-hosted assistant. Run Saba on your own computer or server, then use a browser, terminal, or connected chat app to work with files, keep conversation context, and automate recurring tasks.
 
-You control the AI provider, model, accessible files, enabled tools, and channel connections.
+Saba is a Python AI agent gateway with a WebUI and terminal interface. You choose the model provider, workspace access, enabled tools, and channel connections.
 
 <p align="center">
   <img src="./images/logo.png" alt="Saba AI" width="380">
@@ -19,6 +19,7 @@ You control the AI provider, model, accessible files, enabled tools, and channel
 - **Use tools:** Run approved shell, web, MCP, document, and automation tools when enabled.
 - **Remember context:** Keep session history and selected long-term preferences.
 - **Connect channels:** Use the WebUI, Telegram, WhatsApp, and other supported channels.
+- **Follow EBC News:** Look up current stories from the Ethiopian Broadcasting Corporation in English, Amharic, or Afaan Oromo, with links to the original articles.
 - **Use different models:** Configure hosted providers, OpenAI-compatible endpoints, or local model servers.
 - **Automate work:** Create scheduled tasks and longer-running goals.
 - **Develop and extend:** Add skills, plugins, MCP servers, providers, and channel integrations.
@@ -235,5 +236,12 @@ docker compose down
 ```
 
 - **OpenClaw inspiration and open-source community:** [openclaw/openclaw](https://github.com/openclaw/openclaw)
+
+## Documentation and support
+
+- [Quick start](./docs/quick-start.md) · [Configuration](./docs/configuration.md) · [Providers](./docs/providers.md)
+- [WebUI guide](./docs/webui.md) · [Deployment](./docs/deployment.md) · [Troubleshooting](./docs/troubleshooting.md)
+- [Python SDK](./docs/python-sdk.md) · [OpenAI-compatible API](./docs/openai-api.md) · [Development guide](./docs/development.md)
+- [Report a bug](https://github.com/mikilezen/saba/issues/new?template=bug_report.yml)
 
 Saba is released under the MIT License. See [`LICENSE`](./LICENSE) and preserve upstream copyright and license notices when redistributing changes.
