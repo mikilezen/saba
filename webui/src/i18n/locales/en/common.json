@@ -1833,7 +1833,7 @@
       "checkAgain": "Check again",
       "marketplaceSearchFailed": "Could not search skill marketplaces.",
       "marketplaceInstallFailed": "Could not install this skill.",
-      "marketplaceSearchPlaceholder": "Search skills",
+      "marketplaceSearchPlaceholder": "Search skills or paste a ClawHub link",
       "marketplaceSearchLabel": "Search skills",
       "marketplaceSearching": "Searching",
       "marketplaceProviderFilter": "Skill source",
