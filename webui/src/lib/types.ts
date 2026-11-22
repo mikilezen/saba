@@ -352,13 +352,14 @@ export interface MarketplaceSkillSummary {
   installed: boolean;
   install_supported: boolean;
   metric: "installs_24h" | "installs_total";
+  summary?: string;
   version?: string;
   verified?: boolean;
   requires_api_key?: boolean;
   rank?: number;
 }
 
-export type MarketplaceProvider = "all" | "skills_sh" | "skillhub";
+export type MarketplaceProvider = "all" | "skills_sh" | "skillhub" | "clawhub";
 
 export interface SkillsSearchPayload {
   query: string;
