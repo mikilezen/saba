@@ -13,7 +13,7 @@ import time
 import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any, cast
-from urllib.parse import quote, urlparse
+from urllib.parse import quote, unquote, urlparse
 
 import httpx
 
@@ -24,7 +24,13 @@ from saba.security.workspace_policy import WorkspaceBoundaryError, require_path_
 _PROVIDER_ALL = "all"
 _PROVIDER_SKILLS_SH = "skills_sh"
 _PROVIDER_SKILLHUB = "skillhub"
-_PROVIDERS = {_PROVIDER_ALL, _PROVIDER_SKILLS_SH, _PROVIDER_SKILLHUB}
+_PROVIDER_CLAWHUB = "clawhub"
+_PROVIDERS = {
+    _PROVIDER_ALL,
+    _PROVIDER_SKILLS_SH,
+    _PROVIDER_SKILLHUB,
+    _PROVIDER_CLAWHUB,
+}
 _SEARCH_URL = "https://skills.sh/api/search"
 _TRENDING_URL = "https://skills.sh/api/skills/trending/0"
 _SKILL_PAGE_BASE_URL = "https://www.skills.sh"
@@ -33,6 +39,9 @@ _SKILLHUB_SEARCH_URL = f"{_SKILLHUB_API_BASE_URL}/api/v1/search"
 _SKILLHUB_TRENDING_URL = f"{_SKILLHUB_API_BASE_URL}/api/v1/showcase/trending"
 _SKILLHUB_DOWNLOAD_URL = f"{_SKILLHUB_API_BASE_URL}/api/v1/download"
 _SKILLHUB_PAGE_BASE_URL = "https://skillhub.cn"
+_CLAWHUB_BASE_URL = "https://clawhub.ai"
+_CLAWHUB_SEARCH_URL = f"{_CLAWHUB_BASE_URL}/api/v1/search"
+_CLAWHUB_SKILLS_URL = f"{_CLAWHUB_BASE_URL}/api/v1/skills"
 _ALL_TIME_URLS = (
     "https://skills.sh/api/skills/all-time/0",
     "https://skills.sh/api/skills/all-time/1",
@@ -50,10 +59,14 @@ _WEEKLY_CACHE_TTL_SECONDS = 300
 _SKILLHUB_MAX_DOWNLOAD_BYTES = 25 * 1024 * 1024
 _SKILLHUB_MAX_UNPACKED_BYTES = 100 * 1024 * 1024
 _SKILLHUB_MAX_FILES = 1_000
+_CLAWHUB_OWNER_RE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_.-]{0,62}[A-Za-z0-9])?$")
+_CLAWHUB_CACHE_TTL_SECONDS = 60
+_CLAWHUB_CACHE_MAX_ENTRIES = 128
 # The skills CLI's OpenClaw adapter copies into <workspace>/skills, saba's layout too.
 _CLI_AGENT = "openclaw"
 _weekly_cache: dict[tuple[str, str], list[int]] = {}
 _weekly_cache_expires_at = 0.0
+_clawhub_search_cache: dict[str, tuple[float, list[dict[str, Any]]]] = {}
 
 
 def _response_json_object(response: httpx.Response) -> dict[str, Any] | None:
@@ -88,10 +101,13 @@ async def trending_marketplace_skills(
         return await _trending_skillhub_skills(workspace_path, limit=limit)
     if selected == _PROVIDER_SKILLS_SH:
         return await _trending_skills_sh_skills(workspace_path, limit=limit)
+    if selected == _PROVIDER_CLAWHUB:
+        return await _trending_clawhub_skills(workspace_path, limit=limit)
 
     results = await asyncio.gather(
         _trending_skills_sh_skills(workspace_path, limit=limit),
         _trending_skillhub_skills(workspace_path, limit=limit),
+        _trending_clawhub_skills(workspace_path, limit=limit),
         return_exceptions=True,
     )
     payloads = [result for result in results if isinstance(result, dict)]
@@ -171,15 +187,27 @@ async def search_marketplace_skills(
     if len(normalized) > 100:
         raise SkillsMarketplaceError("search query is too long")
 
+    clawhub_ref = _parse_clawhub_link(normalized)
+    if clawhub_ref is not None:
+        return await _search_clawhub_skills(
+            normalized,
+            workspace_path,
+            limit=limit,
+            exact_ref=clawhub_ref,
+        )
+
     selected = _valid_provider(provider)
     if selected == _PROVIDER_SKILLHUB:
         return await _search_skillhub_skills(normalized, workspace_path, limit=limit)
     if selected == _PROVIDER_SKILLS_SH:
         return await _search_skills_sh_skills(normalized, workspace_path, limit=limit)
+    if selected == _PROVIDER_CLAWHUB:
+        return await _search_clawhub_skills(normalized, workspace_path, limit=limit)
 
     results = await asyncio.gather(
         _search_skills_sh_skills(normalized, workspace_path, limit=limit),
         _search_skillhub_skills(normalized, workspace_path, limit=limit),
+        _search_clawhub_skills(normalized, workspace_path, limit=limit),
         return_exceptions=True,
     )
     payloads = [result for result in results if isinstance(result, dict)]
@@ -275,6 +303,83 @@ async def _search_skillhub_skills(
     }
 
 
+async def _search_clawhub_skills(
+    normalized: str,
+    workspace_path: Path,
+    *,
+    limit: int,
+    exact_ref: tuple[str, str] | None = None,
+) -> dict[str, Any]:
+    query = exact_ref[1] if exact_ref is not None else normalized
+    cache_key = f"exact:{exact_ref[0]}/{exact_ref[1]}" if exact_ref else f"search:{query.casefold()}"
+    cached = _clawhub_search_cache.get(cache_key)
+    now = time.monotonic()
+    if cached is not None and cached[0] > now:
+        rows = cached[1]
+    else:
+        params: dict[str, str | int] = {
+            "q": query,
+            "limit": min(max(limit, 1), 50),
+        }
+        if exact_ref is not None:
+            params["mode"] = "exact"
+        try:
+            async with _skills_client() as client:
+                response = await client.get(_CLAWHUB_SEARCH_URL, params=params)
+                if response.status_code == 429:
+                    retry_after = response.headers.get("retry-after", "")
+                    detail = (
+                        f" Retry after {retry_after} seconds."
+                        if retry_after.isdigit()
+                        else " Try again later."
+                    )
+                    raise SkillsMarketplaceError(
+                        f"ClawHub is rate limiting searches.{detail}",
+                        status=429,
+                    )
+                response.raise_for_status()
+                payload = _response_json_object(response) or {}
+        except SkillsMarketplaceError:
+            raise
+        except (httpx.HTTPError, ValueError) as exc:
+            raise SkillsMarketplaceError(
+                "ClawHub search is temporarily unavailable",
+                status=502,
+            ) from exc
+
+        raw_rows = payload.get("results", [])
+        rows = [
+            cast(dict[str, Any], row)
+            for row in raw_rows
+            if isinstance(row, dict)
+        ] if isinstance(raw_rows, list) else []
+        _clawhub_search_cache[cache_key] = (now + _CLAWHUB_CACHE_TTL_SECONDS, rows)
+        if len(_clawhub_search_cache) > _CLAWHUB_CACHE_MAX_ENTRIES:
+            expired = [key for key, (expires, _) in _clawhub_search_cache.items() if expires <= now]
+            for key in expired:
+                _clawhub_search_cache.pop(key, None)
+            if len(_clawhub_search_cache) > _CLAWHUB_CACHE_MAX_ENTRIES:
+                oldest = next(iter(_clawhub_search_cache))
+                _clawhub_search_cache.pop(oldest, None)
+
+    installed = _installed_skill_names(workspace_path)
+    skills = [
+        skill
+        for row in rows
+        if (skill := _clawhub_skill(row, installed)) is not None
+        and (
+            exact_ref is None
+            or skill["source"] == f"@{exact_ref[0].casefold()}/{exact_ref[1]}"
+        )
+    ]
+    return {
+        "query": normalized,
+        "skills": skills,
+        "provider": _PROVIDER_CLAWHUB,
+        "install_supported": skills_install_supported(),
+    }
+
+
 async def _trending_skillhub_skills(
     workspace_path: Path,
     *,
@@ -307,6 +412,42 @@ async def _trending_skillhub_skills(
         "period": "trending",
         "provider": _PROVIDER_SKILLHUB,
         "install_supported": True,
+    }
+
+
+async def _trending_clawhub_skills(
+    workspace_path: Path,
+    *,
+    limit: int,
+) -> dict[str, Any]:
+    try:
+        async with _skills_client() as client:
+            response = await client.get(
+                _CLAWHUB_SKILLS_URL,
+                params={"sort": "trending", "limit": min(max(limit, 1), 50)},
+            )
+            response.raise_for_status()
+            payload = _response_json_object(response) or {}
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SkillsMarketplaceError(
+            "ClawHub trending skills are temporarily unavailable",
+            status=502,
+        ) from exc
+
+    installed = _installed_skill_names(workspace_path)
+    rows = payload.get("items", [])
+    skills: list[dict[str, Any]] = []
+    for rank, row in enumerate(rows, start=1):
+        if not isinstance(row, dict):
+            continue
+        skill = _clawhub_skill(cast(dict[str, Any], row), installed, rank=rank)
+        if skill is not None:
+            skills.append(skill)
+    return {
+        "skills": skills,
+        "period": "trending",
+        "provider": _PROVIDER_CLAWHUB,
+        "install_supported": skills_install_supported(),
     }
 
 
@@ -343,6 +484,8 @@ async def install_marketplace_skill(
     selected = _valid_provider(provider, allow_all=False)
     if selected == _PROVIDER_SKILLHUB:
         return await _install_skillhub_skill(skill_id, version, workspace_path)
+    if selected == _PROVIDER_CLAWHUB:
+        return await _install_clawhub_skill(source, skill_id, workspace_path)
     return await _install_skills_sh_skill(source, skill_id, workspace_path)
 
 
@@ -433,6 +576,105 @@ async def _install_skills_sh_skill(
             status=502,
         )
     return {"installed": True, "already_installed": False, "name": skill_id}
+
+
+async def _install_clawhub_skill(
+    source: str,
+    skill_id: str,
+    workspace_path: Path,
+) -> dict[str, Any]:
+    match = re.fullmatch(r"@([^/]+)/([^/]+)", source)
+    if (
+        match is None
+        or _CLAWHUB_OWNER_RE.fullmatch(match.group(1)) is None
+        or not _valid_skill_id(skill_id)
+        or match.group(2) != skill_id
+    ):
+        raise SkillsMarketplaceError("invalid ClawHub skill reference")
+
+    loader = SkillsLoader(workspace_path)
+    existing = {entry["name"] for entry in loader.list_skills(filter_unavailable=False)}
+    if skill_id in existing:
+        return {
+            "installed": True,
+            "already_installed": True,
+            "name": skill_id,
+            "provider": _PROVIDER_CLAWHUB,
+        }
+
+    workspace = workspace_path.expanduser().resolve()
+    workspace.mkdir(parents=True, exist_ok=True)
+    try:
+        require_path_within(
+            workspace / "skills",
+            workspace,
+            message="skills directory must stay inside the workspace",
+        )
+    except WorkspaceBoundaryError as exc:
+        raise SkillsMarketplaceError(str(exc), status=403) from exc
+
+    npx = shutil.which("npx")
+    if npx is None:
+        raise SkillsMarketplaceError(
+            "Node.js with npx is required to install ClawHub skills",
+            status=503,
+        )
+
+    env = os.environ.copy()
+    env["CLAWHUB_DISABLE_TELEMETRY"] = "1"
+    command = (
+        npx,
+        "--yes",
+        "clawhub@latest",
+        "--workdir",
+        str(workspace),
+        "--no-input",
+        "install",
+        source,
+    )
+    process = await asyncio.create_subprocess_exec(
+        *command,
+        cwd=str(workspace),
+        env=env,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.STDOUT,
+    )
+    try:
+        output, _ = await asyncio.wait_for(
+            process.communicate(),
+            timeout=_INSTALL_TIMEOUT_SECONDS,
+        )
+    except TimeoutError as exc:
+        process.kill()
+        await process.communicate()
+        raise SkillsMarketplaceError("ClawHub skill installation timed out", status=504) from exc
+
+    if process.returncode != 0:
+        detail = _safe_output_tail(output)
+        message = "ClawHub skill installation failed"
+        if detail:
+            message = f"{message}: {detail}"
+        raise SkillsMarketplaceError(message, status=502)
+
+    installed = next(
+        (
+            entry
+            for entry in loader.list_skills(filter_unavailable=False)
+            if entry["source"] == "workspace" and entry["name"] == skill_id
+        ),
+        None,
+    )
+    if installed is None:
+        raise SkillsMarketplaceError(
+            "ClawHub finished, but the skill was not found in this workspace",
+            status=502,
+        )
+    return {
+        "installed": True,
+        "already_installed": False,
+        "name": skill_id,
+        "provider": _PROVIDER_CLAWHUB,
+    }
 
 
 async def _install_skillhub_skill(
@@ -833,6 +1075,87 @@ def _skillhub_skill(
     if rank is not None:
         skill["rank"] = rank
     return skill
+
+
+def _clawhub_skill(
+    row: dict[str, Any],
+    installed: set[str],
+    *,
+    rank: int | None = None,
+) -> dict[str, Any] | None:
+    skill_id = row.get("slug")
+    owner = row.get("ownerHandle")
+    if not isinstance(owner, str) or _CLAWHUB_OWNER_RE.fullmatch(owner) is None:
+        owner_data = row.get("owner")
+        owner_payload = cast(dict[str, Any], owner_data) if isinstance(owner_data, dict) else {}
+        owner = owner_payload.get("handle")
+    if (
+        not isinstance(skill_id, str)
+        or not _valid_skill_id(skill_id)
+        or not isinstance(owner, str)
+        or _CLAWHUB_OWNER_RE.fullmatch(owner) is None
+    ):
+        return None
+
+    owner = owner.lower()
+    display_name = row.get("displayName") or skill_id
+    if not isinstance(display_name, str) or not display_name.strip():
+        display_name = skill_id
+    summary = row.get("summary")
+    latest_version = row.get("latestVersion")
+    latest_version_payload = (
+        cast(dict[str, Any], latest_version) if isinstance(latest_version, dict) else {}
+    )
+    version = row.get("version") or latest_version_payload.get("version")
+    if not isinstance(version, str) or _VERSION_RE.fullmatch(version) is None:
+        version = ""
+
+    skill: dict[str, Any] = {
+        "id": f"{_PROVIDER_CLAWHUB}:{owner}/{skill_id}",
+        "skill_id": skill_id,
+        "name": display_name.strip(),
+        "source": f"@{owner}/{skill_id}",
+        "provider": _PROVIDER_CLAWHUB,
+        "installs": 0,
+        "url": f"{_CLAWHUB_BASE_URL}/{owner}/skills/{skill_id}",
+        "installed": skill_id in installed,
+        "install_supported": skills_install_supported(),
+        "metric": "installs_total",
+        "version": version,
+    }
+    if isinstance(summary, str) and summary.strip():
+        skill["summary"] = summary.strip()[:500]
+    if rank is not None:
+        skill["rank"] = rank
+    return skill
+
+
+def _parse_clawhub_link(value: str) -> tuple[str, str] | None:
+    """Parse canonical and short public ClawHub skill links without fetching them."""
+    try:
+        parsed = urlparse(value)
+        hostname = parsed.hostname
+    except ValueError:
+        return None
+    if (
+        parsed.scheme.lower() != "https"
+        or hostname is None
+        or hostname.lower() not in {"clawhub.ai", "www.clawhub.ai"}
+        or parsed.username is not None
+        or parsed.password is not None
+    ):
+        return None
+
+    path_parts = [unquote(part) for part in parsed.path.split("/") if part]
+    if len(path_parts) == 3 and path_parts[1].lower() == "skills":
+        owner, skill_id = path_parts[0], path_parts[2]
+    elif len(path_parts) == 2:
+        owner, skill_id = path_parts
+    else:
+        return None
+    if _CLAWHUB_OWNER_RE.fullmatch(owner) is None or not _valid_skill_id(skill_id):
+        return None
+    return owner.lower(), skill_id
 
 
 async def _load_weekly_installs(
