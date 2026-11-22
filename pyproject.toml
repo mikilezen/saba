@@ -1,7 +1,7 @@
 [project]
 name = "saba-ai"
 version = "0.3.5"
-description = "A lightweight personal AI assistant framework"
+description = "Self-hosted Python AI assistant and agent gateway for chat, tools, files, channels, and automation"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -10,7 +10,7 @@ authors = [
     {name = "the saba contributors"},
     {name = "the Saba contributors"}
 ]
-keywords = ["ai", "agent", "chatbot"]
+keywords = ["self-hosted", "AI assistant", "AI agent", "Python", "local AI", "chatbot", "automation"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
