@@ -42,8 +42,8 @@ from saba.bus.events import OutboundMessage
 from saba.bus.outbound_events import ContextCompactionEvent
 from saba.bus.queue import MessageBus
 from saba.channels.base import BaseChannel
-from saba.config_base import Base
 from saba.config.home import get_home_path
+from saba.config_base import Base
 from saba.security.network import validate_url_target
 from saba.utils.logging_bridge import redirect_lib_logging
 

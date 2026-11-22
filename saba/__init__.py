@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from .agent.tools.context import RequestContext
     from .bus.runtime_events import SessionTurnPersisted
+    from .runtime_context import RuntimeContextBlock, RuntimeContextProvider
     from .saba import (
         STREAM_EVENT_REASONING_COMPLETED,
         STREAM_EVENT_REASONING_DELTA,
@@ -24,15 +25,14 @@ if TYPE_CHECKING:
         STREAM_EVENT_TOOL_STARTED,
         STREAM_EVENT_TYPES,
         LLMUsage,
-        Saba,
         RunResult,
         RunStream,
+        Saba,
         SessionInfo,
         SessionSnapshot,
         StreamEvent,
         StreamEventType,
     )
-    from .runtime_context import RuntimeContextBlock, RuntimeContextProvider
 
 
 def _read_pyproject_version() -> str | None:

@@ -12,8 +12,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
-from saba.gateway import GatewayStartOptions, build_gateway_command
 from saba.config.home import get_default_home_path
+from saba.gateway import GatewayStartOptions, build_gateway_command
 
 ServiceManagerKind = Literal["auto", "systemd", "launchd"]
 
