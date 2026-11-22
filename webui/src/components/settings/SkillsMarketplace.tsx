@@ -202,7 +202,13 @@ export function SkillsMarketplace({
           />
           <SearchInput
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+              setQuery(value);
+              if (/^https:\/\/(?:www\.)?clawhub\.ai\//i.test(value.trim())) {
+                setProvider("clawhub");
+              }
+            }}
             placeholder={t("settings.skills.marketplaceSearchPlaceholder", {
               defaultValue: "Search skills",
             })}
@@ -321,6 +327,9 @@ export function SkillsMarketplace({
                     "This third-party skill comes from {{provider}} ({{source}}) and may include instructions or executable scripts.",
                 })}
               </span>
+              {selected?.summary ? (
+                <span className="block text-muted-foreground">{selected.summary}</span>
+              ) : null}
               <span className="flex flex-wrap items-center gap-2 rounded-control bg-muted px-2 py-1.5 text-[12px] text-foreground">
                 {selected ? <ProviderMark provider={selected.provider} /> : null}
                 <code>{selected?.source}</code>
@@ -356,7 +365,7 @@ function ProviderFilter({
   onChange: (provider: MarketplaceProvider) => void;
 }) {
   const { t } = useTranslation();
-  const providers: MarketplaceProvider[] = ["all", "skills_sh", "skillhub"];
+  const providers: MarketplaceProvider[] = ["all", "skills_sh", "skillhub", "clawhub"];
   return (
     <SegmentedControl
       value={value}
@@ -401,6 +410,7 @@ function MarketplaceSkillGroups({
   const providers: Array<Exclude<MarketplaceProvider, "all">> = [
     "skills_sh",
     "skillhub",
+    "clawhub",
   ];
   if (!grouped) {
     return (
@@ -604,7 +614,11 @@ function ProviderDot({
     <span
       className={cn(
         "h-1.5 w-1.5 shrink-0 rounded-full",
-        provider === "skillhub" ? "bg-[#006EFF]" : "bg-foreground/55",
+        provider === "clawhub"
+          ? "bg-[#f97316]"
+          : provider === "skillhub"
+            ? "bg-[#006EFF]"
+            : "bg-foreground/55",
       )}
       aria-hidden
     />
@@ -612,10 +626,12 @@ function ProviderDot({
 }
 
 function providerLabel(provider: Exclude<MarketplaceProvider, "all">): string {
+  if (provider === "clawhub") return "ClawHub";
   return provider === "skillhub" ? "SkillHub" : "skills.sh";
 }
 
 function providerUrl(provider: Exclude<MarketplaceProvider, "all">): string {
+  if (provider === "clawhub") return "https://clawhub.ai";
   return provider === "skillhub" ? "https://skillhub.cn" : "https://skills.sh/trending";
 }
 
@@ -677,7 +693,7 @@ function TrendSparkline({ values }: { values?: number[] }) {
 function MarketplaceSkeleton({ ranked = false, provider }: { ranked?: boolean; provider: MarketplaceProvider }) {
   const { t } = useTranslation();
   const grouped = provider === "all";
-  const providers: Array<Exclude<MarketplaceProvider, "all">> = grouped ? ["skills_sh", "skillhub"] : [provider];
+  const providers: Array<Exclude<MarketplaceProvider, "all">> = grouped ? ["skills_sh", "skillhub", "clawhub"] : [provider];
   return (
     <SkeletonStatus
       label={t("settings.skills.loading")}
