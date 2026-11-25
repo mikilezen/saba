@@ -906,6 +906,38 @@ export function ProvidersSettings({
                     className="h-9 rounded-full text-[13px]"
                   />
                 </label>
+                {provider.name === "ollama" && (
+                  <fieldset className="space-y-2 rounded-xl border border-border/55 bg-muted/15 px-3.5 py-3">
+                    <legend className="px-1 text-[12px] font-medium text-muted-foreground">
+                      {t("settings.providers.ollamaGpuTitle")}
+                    </legend>
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
+                      <label className="inline-flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="ollama-gpu-mode"
+                          value="gpu"
+                          checked={form.ollamaUseGpu}
+                          onChange={() => onChangeProviderForm(provider.name, { ollamaUseGpu: true })}
+                        />
+                        {t("settings.providers.ollamaUseGpu")}
+                      </label>
+                      <label className="inline-flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="ollama-gpu-mode"
+                          value="cpu"
+                          checked={!form.ollamaUseGpu}
+                          onChange={() => onChangeProviderForm(provider.name, { ollamaUseGpu: false })}
+                        />
+                        {t("settings.providers.ollamaCpuOnly")}
+                      </label>
+                    </div>
+                    <p className="text-[12px] leading-5 text-muted-foreground">
+                      {t("settings.providers.ollamaGpuHelp")}
+                    </p>
+                  </fieldset>
+                )}
                 <ProviderRequestOptions
                   providerName={provider.name}
                   apiConfigurable={provider.provider_api_configurable === true}
