@@ -119,7 +119,7 @@ jobs:
       # later uv run sync pruning the packages installed by the previous step.
       - name: Lint with ruff
         if: matrix.coverage
-        run: uv run --no-sync ruff check saba tests conftest.py scripts/check_import_boundaries.py scripts/pytest_timing.py scripts/ci_scope.py scripts/ci_gate.py scripts/native_acceptance_input.py scripts/verify_packaged_update.py
+        run: uv run --no-sync ruff check saba tests scripts/check_import_boundaries.py scripts/pytest_timing.py scripts/ci_scope.py scripts/ci_gate.py scripts/native_acceptance_input.py scripts/verify_packaged_update.py
 
       - name: Type check with BasedPyright (strict)
         if: matrix.coverage
