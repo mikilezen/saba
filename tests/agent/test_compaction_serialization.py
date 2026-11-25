@@ -6,8 +6,8 @@ from unittest.mock import patch
 
 import pytest
 
-from saba.saba import Saba
 from saba.providers.base import LLMProvider, LLMResponse
+from saba.saba import Saba
 
 
 class ControlledProvider(LLMProvider):
