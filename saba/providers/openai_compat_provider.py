@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import hashlib
 import importlib.util
 import json
@@ -496,6 +497,7 @@ class OpenAICompatProvider(LLMProvider):
         model_api: ModelAPICapabilities | None = None,
         extra_query: dict[str, str] | None = None,
         proxy: str | None = None,
+        ollama_use_gpu: bool = True,
         provider_name: str = "openai",
     ):
         super().__init__(api_key, api_base, provider_name=provider_name)
@@ -509,6 +511,7 @@ class OpenAICompatProvider(LLMProvider):
         )
         self._extra_query = extra_query or {}
         self._proxy = proxy or None
+        self._ollama_use_gpu = ollama_use_gpu
         self._responses = ResponsesBackend()
 
         effective_base = api_base or (spec.default_api_base if spec else None) or None
@@ -1788,6 +1791,189 @@ class OpenAICompatProvider(LLMProvider):
             provider_context=provider_context,
         )
 
+    def _ollama_native_payload(self, kwargs: dict[str, Any], *, stream: bool) -> dict[str, Any]:
+        """Translate the chat request to Ollama's native API for CPU-only mode."""
+        tool_names_by_id: dict[str, str] = {}
+        for message in kwargs["messages"]:
+            if message.get("role") != "assistant":
+                continue
+            for tool_call in message.get("tool_calls") or []:
+                function = tool_call.get("function") if isinstance(tool_call, dict) else None
+                tool_id = tool_call.get("id") if isinstance(tool_call, dict) else None
+                name = function.get("name") if isinstance(function, dict) else None
+                if isinstance(tool_id, str) and isinstance(name, str):
+                    tool_names_by_id[tool_id] = name
+        native_messages: list[dict[str, Any]] = []
+        for message in kwargs["messages"]:
+            native_message = dict(message)
+            if native_message.get("role") == "tool":
+                tool_call_id = native_message.pop("tool_call_id", None)
+                tool_name = tool_names_by_id.get(str(tool_call_id))
+                if not tool_name:
+                    raise ValueError("CPU-only Ollama mode could not match a tool result to its tool call")
+                native_message.pop("name", None)
+                native_message["tool_name"] = tool_name
+            content = native_message.get("content")
+            if isinstance(content, list):
+                text_parts: list[str] = []
+                images: list[str] = []
+                for block in content:
+                    if not isinstance(block, dict):
+                        continue
+                    if block.get("type") == "text" and isinstance(block.get("text"), str):
+                        text_parts.append(block["text"])
+                    elif block.get("type") == "image_url":
+                        image_url = block.get("image_url")
+                        if isinstance(image_url, dict):
+                            image_url = image_url.get("url")
+                        if not isinstance(image_url, str) or not image_url.startswith("data:image/"):
+                            raise ValueError("CPU-only Ollama mode requires images to be inline data URLs")
+                        encoded = image_url.split(";base64,", 1)
+                        if len(encoded) != 2:
+                            raise ValueError("CPU-only Ollama mode received an unsupported image URL")
+                        # Validate the payload before forwarding it to the Ollama server.
+                        base64.b64decode(encoded[1], validate=True)
+                        images.append(encoded[1])
+                native_message["content"] = "".join(text_parts)
+                if images:
+                    native_message["images"] = images
+            native_messages.append(native_message)
+        payload: dict[str, Any] = {
+            "model": kwargs["model"],
+            "messages": native_messages,
+            "stream": stream,
+            "options": {"num_gpu": 0},
+        }
+        options = cast(dict[str, Any], payload["options"])
+        if "temperature" in kwargs:
+            options["temperature"] = kwargs["temperature"]
+        max_tokens = kwargs.get("max_tokens", kwargs.get("max_completion_tokens"))
+        if max_tokens is not None:
+            options["num_predict"] = max_tokens
+        if kwargs.get("tools"):
+            payload["tools"] = kwargs["tools"]
+        for key in ("format", "keep_alive", "think", "truncate"):
+            if key in kwargs:
+                payload[key] = kwargs[key]
+        custom = kwargs.get("extra_body")
+        if isinstance(custom, dict):
+            custom_options = custom.get("options")
+            if isinstance(custom_options, dict):
+                options.update(custom_options)
+            payload.update({
+                key: value for key, value in custom.items()
+                if key not in {"options", "tools", "temperature", "max_tokens", "max_completion_tokens"}
+            })
+        options["num_gpu"] = 0
+        return payload
+
+    async def _ollama_native_chat(
+        self,
+        kwargs: dict[str, Any],
+        *,
+        stream: bool,
+        on_content_delta: Callable[[str], Awaitable[None]] | None = None,
+        on_thinking_delta: Callable[[str], Awaitable[None]] | None = None,
+        on_tool_call_delta: Callable[[dict[str, Any]], Awaitable[None]] | None = None,
+    ) -> LLMResponse:
+        import httpx
+
+        base = (self._effective_base or "http://localhost:11434/v1").rstrip("/")
+        if base.endswith("/v1"):
+            base = base[:-3]
+        host = (urlparse(base).hostname or "").lower()
+        if host == "ollama.com" or host.endswith(".ollama.com"):
+            raise ValueError("CPU-only mode requires a local Ollama server")
+        url = f"{base}/api/chat"
+        payload = self._ollama_native_payload(kwargs, stream=stream)
+        timeout = _openai_compat_timeout_s()
+        is_local = _is_local_endpoint(self._spec, base)
+        client_options: dict[str, Any] = {
+            "timeout": timeout,
+            "follow_redirects": True,
+            "trust_env": not is_local and not self._proxy,
+            "headers": {"Authorization": f"Bearer {self._api_key_for_client}"},
+        }
+        if self._proxy:
+            client_options["proxy"] = self._proxy
+
+        async with httpx.AsyncClient(**client_options) as client:
+            if not stream:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+                data = response.json()
+                return self._parse_ollama_native_response(data)
+
+            content_parts: list[str] = []
+            thinking_parts: list[str] = []
+            final: dict[str, Any] = {}
+            async with client.stream("POST", url, json=payload) as response:
+                response.raise_for_status()
+                async for line in response.aiter_lines():
+                    if not line:
+                        continue
+                    chunk = json.loads(line)
+                    message = chunk.get("message") or {}
+                    content = message.get("content")
+                    thinking = message.get("thinking")
+                    if isinstance(content, str) and content:
+                        content_parts.append(content)
+                        if on_content_delta:
+                            await on_content_delta(content)
+                    if isinstance(thinking, str) and thinking:
+                        thinking_parts.append(thinking)
+                        if on_thinking_delta:
+                            await on_thinking_delta(thinking)
+                    final.update(chunk)
+
+            parsed = self._parse_ollama_native_response(final)
+            parsed.content = "".join(content_parts) or parsed.content
+            parsed.reasoning_content = "".join(thinking_parts) or parsed.reasoning_content
+            if on_tool_call_delta:
+                for index, tool_call in enumerate(parsed.tool_calls):
+                    await on_tool_call_delta({
+                        "index": index,
+                        "id": tool_call.id,
+                        "type": "function",
+                        "function": {
+                            "name": tool_call.name,
+                            "arguments": json.dumps(tool_call.arguments, ensure_ascii=False),
+                        },
+                    })
+            return parsed
+
+    @staticmethod
+    def _parse_ollama_native_response(data: dict[str, Any]) -> LLMResponse:
+        message = data.get("message") if isinstance(data.get("message"), dict) else {}
+        raw_calls = message.get("tool_calls") if isinstance(message.get("tool_calls"), list) else []
+        calls: list[ToolCallRequest] = []
+        for item in raw_calls:
+            if not isinstance(item, dict):
+                continue
+            function = item.get("function") if isinstance(item.get("function"), dict) else {}
+            name = function.get("name")
+            if not isinstance(name, str) or not name:
+                continue
+            calls.append(ToolCallRequest(
+                id=uuid.uuid4().hex,
+                name=name,
+                arguments=parse_tool_arguments(function.get("arguments", {})),
+            ))
+        prompt_tokens = data.get("prompt_eval_count")
+        output_tokens = data.get("eval_count")
+        usage = None
+        if isinstance(prompt_tokens, int) and isinstance(output_tokens, int):
+            usage = LLMUsage.reported(input_tokens=prompt_tokens, output_tokens=output_tokens)
+        content = message.get("content") if isinstance(message.get("content"), str) else None
+        thinking = message.get("thinking") if isinstance(message.get("thinking"), str) else None
+        return LLMResponse(
+            content=content,
+            tool_calls=calls,
+            finish_reason="tool_calls" if calls else "stop",
+            usage=usage,
+            reasoning_content=thinking,
+        )
+
     async def chat(
         self,
         messages: list[dict[str, Any]],
@@ -1799,6 +1985,17 @@ class OpenAICompatProvider(LLMProvider):
         tool_choice: str | dict[str, Any] | None = None,
         provider_context: ProviderCallContext | None = None,
     ) -> LLMResponse:
+        if self._spec and self._spec.name == "ollama" and not self._ollama_use_gpu:
+            try:
+                kwargs = self._build_kwargs(
+                    messages, tools, model, max_tokens, temperature,
+                    reasoning_effort, tool_choice,
+                )
+                kwargs = await prepare_inline_images(kwargs)
+                return await self._ollama_native_chat(kwargs, stream=False)
+            except Exception as e:
+                return self._handle_error(e, spec=self._spec, api_base=self.api_base)
+
         client = await self._ensure_client()
         affinity = self._opencode_affinity_headers(provider_context)
         try:
@@ -1850,6 +2047,23 @@ class OpenAICompatProvider(LLMProvider):
         on_tool_call_delta: Callable[[dict[str, Any]], Awaitable[None]] | None = None,
         provider_context: ProviderCallContext | None = None,
     ) -> LLMResponse:
+        if self._spec and self._spec.name == "ollama" and not self._ollama_use_gpu:
+            try:
+                kwargs = self._build_kwargs(
+                    messages, tools, model, max_tokens, temperature,
+                    reasoning_effort, tool_choice,
+                )
+                kwargs = await prepare_inline_images(kwargs)
+                return await self._ollama_native_chat(
+                    kwargs,
+                    stream=True,
+                    on_content_delta=on_content_delta,
+                    on_thinking_delta=on_thinking_delta,
+                    on_tool_call_delta=on_tool_call_delta,
+                )
+            except Exception as e:
+                return self._handle_error(e, spec=self._spec, api_base=self.api_base)
+
         client = await self._ensure_client()
         idle_timeout_s = resolve_stream_idle_timeout_s()
         affinity = self._opencode_affinity_headers(provider_context)
