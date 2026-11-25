@@ -1834,6 +1834,7 @@
       "marketplaceSearchFailed": "Could not search skill marketplaces.",
       "marketplaceInstallFailed": "Could not install this skill.",
       "marketplaceSearchPlaceholder": "Search skills or paste a ClawHub link",
+      "marketplaceClawhubLatest": "Installs the latest ClawHub version.",
       "marketplaceSearchLabel": "Search skills",
       "marketplaceSearching": "Searching",
       "marketplaceProviderFilter": "Skill source",
