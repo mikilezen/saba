@@ -100,7 +100,7 @@ function SkeletonPreview() {
       </select> : null}
       {surface === "chats" ? <button onClick={() => setDensity(density === "compact" ? "comfortable" : "compact")}>{density}</button> : null}
       <button onClick={() => { document.documentElement.classList.toggle("dark", !dark); setDark(!dark); }}>{dark ? "浅色" : "深色"}</button>
-      <button onClick={() => changeLanguage("zh-CN")}>中文</button><button onClick={() => changeLanguage("en")}>English</button>
+      <button onClick={() => changeLanguage("am")}>አማርኛ</button><button onClick={() => changeLanguage("en")}>English</button>
       <span className="text-xs text-muted-foreground">固定展示状态；仅示例数据，无模型调用</span>
     </nav>
     <iframe key={language} title="首载骨架预览" src={`/browser/fixture.html?${source}`} style={{ width: "100%", minHeight: 0, flex: 1, border: 0 }} />
