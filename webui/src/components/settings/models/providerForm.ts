@@ -9,6 +9,7 @@ export type ProviderForm = {
   apiBase: string;
   api: ModelAPIConfig | null;
   useProxy: boolean;
+  ollamaUseGpu: boolean;
   extraHeaders: string;
   extraBody: string;
   extraQuery: string;
@@ -44,6 +45,7 @@ export function providerFormFromRow(
     apiBase: provider.api_base ?? provider.default_api_base ?? "",
     api: provider.api ?? null,
     useProxy: provider.use_proxy ?? false,
+    ollamaUseGpu: provider.ollama_use_gpu ?? true,
     extraHeaders: providerJsonValue(provider.extra_headers),
     extraBody: providerJsonValue(provider.extra_body),
     extraQuery: providerJsonValue(provider.extra_query),
@@ -61,6 +63,7 @@ export function emptyCustomProviderDraft(): CustomProviderDraft {
     apiBase: "",
     api: { supported_apis: ["chat_completions"], preferred_api: "chat_completions" },
     useProxy: false,
+    ollamaUseGpu: true,
     extraHeaders: "",
     extraBody: "",
     extraQuery: "",
