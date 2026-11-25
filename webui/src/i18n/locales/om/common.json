@@ -1834,6 +1834,7 @@
       "marketplaceSearchFailed": "Could not search skill marketplaces.",
       "marketplaceInstallFailed": "Could not install this skill.",
       "marketplaceSearchPlaceholder": "Dandeettii barbaadi yookaan hidhaa ClawHub maxxansi",
+      "marketplaceClawhubLatest": "Vershiniin ClawHub isa haaraan ni fe'ama.",
       "marketplaceSearchLabel": "Search skills",
       "marketplaceSearching": "Searching",
       "marketplaceProviderFilter": "Skill source",
