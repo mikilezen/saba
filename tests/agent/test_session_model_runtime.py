@@ -6,9 +6,9 @@ from saba.agent.loop import AgentLoop
 from saba.bus.queue import MessageBus
 from saba.bus.runtime_events import RuntimeModelChanged
 from saba.config.schema import ModelPresetConfig
-from saba.saba import Saba
 from saba.providers.base import GenerationSettings, LLMProvider, LLMResponse
 from saba.providers.factory import ProviderSnapshot
+from saba.saba import Saba
 from saba.sdk.types import SessionSnapshot
 from saba.session.model_selection import (
     SESSION_MODEL_PRESET_METADATA_KEY,
