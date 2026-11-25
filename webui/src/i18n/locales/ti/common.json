@@ -1834,6 +1834,7 @@
       "marketplaceSearchFailed": "Could not search skill marketplaces.",
       "marketplaceInstallFailed": "Could not install this skill.",
       "marketplaceSearchPlaceholder": "ክእለታት ድለ ወይ ናይ ClawHub ሊንክ ለጥፍ",
+      "marketplaceClawhubLatest": "ናይ ClawHub ዝሓደሰ ስሪት ይጽዓን።",
       "marketplaceSearchLabel": "Search skills",
       "marketplaceSearching": "Searching",
       "marketplaceProviderFilter": "Skill source",

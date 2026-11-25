@@ -1102,14 +1102,6 @@ def _clawhub_skill(
     if not isinstance(display_name, str) or not display_name.strip():
         display_name = skill_id
     summary = row.get("summary")
-    latest_version = row.get("latestVersion")
-    latest_version_payload = (
-        cast(dict[str, Any], latest_version) if isinstance(latest_version, dict) else {}
-    )
-    version = row.get("version") or latest_version_payload.get("version")
-    if not isinstance(version, str) or _VERSION_RE.fullmatch(version) is None:
-        version = ""
-
     skill: dict[str, Any] = {
         "id": f"{_PROVIDER_CLAWHUB}:{owner}/{skill_id}",
         "skill_id": skill_id,
@@ -1121,7 +1113,6 @@ def _clawhub_skill(
         "installed": skill_id in installed,
         "install_supported": skills_install_supported(),
         "metric": "installs_total",
-        "version": version,
     }
     if isinstance(summary, str) and summary.strip():
         skill["summary"] = summary.strip()[:500]
