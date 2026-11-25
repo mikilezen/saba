@@ -1139,7 +1139,8 @@ ollama run llama3.2
 {
   "providers": {
     "ollama": {
-      "apiBase": "http://localhost:11434"
+      "apiBase": "http://localhost:11434",
+      "ollamaUseGpu": true
     }
   },
   "modelPresets": {

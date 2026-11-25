@@ -150,6 +150,7 @@ def _make_provider_core(
             model_api=setup.model_api,
             extra_query=p.extra_query if p else None,
             proxy=proxy,
+            ollama_use_gpu=p.ollama_use_gpu if p and spec.name == "ollama" else True,
             provider_name=provider_name,
         )
 

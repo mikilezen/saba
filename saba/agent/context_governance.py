@@ -93,7 +93,8 @@ class ContextWindowExceededError(RuntimeError):
         self.source = source
         super().__init__(
             "Model input exceeds the local context budget "
-            f"for {session_key or 'default'}: {estimated_tokens}/{input_budget} via {source}"
+            f"for {session_key or 'default'}: {estimated_tokens}/{input_budget} via {source}. "
+            "Start a new conversation or reduce retained history and large tool outputs."
         )
 
 

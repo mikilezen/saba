@@ -147,6 +147,11 @@ def _provider_config_updates(query: QueryParams) -> dict[str, Any]:
 
     if query_has_alias(query, "use_proxy", "useProxy"):
         updates["use_proxy"] = parse_bool(query_first_alias(query, "use_proxy", "useProxy") or "", "use_proxy")
+    if query_has_alias(query, "ollama_gpu", "ollamaGpu"):
+        updates["ollama_use_gpu"] = parse_bool(
+            query_first_alias(query, "ollama_gpu", "ollamaGpu") or "",
+            "ollama_gpu",
+        )
 
     for snake, camel in (
         ("extra_headers", "extraHeaders"),
@@ -401,6 +406,7 @@ def _provider_settings_row(
         "region": getattr(provider_config, "region", None),
         "profile": getattr(provider_config, "profile", None),
         "use_proxy": provider_config.use_proxy,
+        "ollama_use_gpu": provider_config.ollama_use_gpu,
     }
     if oauth_status is not None:
         row["oauth_account"] = oauth_status["account"]
@@ -1677,6 +1683,8 @@ def update_provider_settings(
             "api_base",
             *_provider_advanced_field_names(provider_key, spec),
         }
+        if spec.name == "ollama":
+            allowed.add("ollama_use_gpu")
         if find_by_name(provider_key) is None:
             allowed.add("display_name")
         if spec.provider_api_configurable:

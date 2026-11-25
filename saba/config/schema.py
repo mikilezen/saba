@@ -257,6 +257,10 @@ class ProviderConfig(Base):
     extra_body: dict[str, Any] | None = None  # Extra provider request fields; shape depends on provider/API surface
     extra_query: dict[str, str] | None = None  # Extra query params (e.g. api-version for Azure-style gateways)
     use_proxy: bool = False
+    ollama_use_gpu: bool = Field(
+        default=True,
+        exclude_if=lambda value: value is True,
+    )  # Ollama local inference defaults to GPU offload when available
     thinking_style: str | None = None  # Thinking/reasoning style for custom providers
 
     # Valid values mirror the keys of _THINKING_STYLE_MAP in

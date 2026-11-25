@@ -542,6 +542,8 @@ Prepare Ollama using the [local model recipe](./provider-cookbook.md#recipe-olla
 
 Most Ollama setups do not require an API key.
 
+Provider settings default to **Use GPU**, which lets Ollama choose GPU offload automatically when available. Select **CPU only** to send requests through Ollama's native API with GPU layers disabled. This preference applies to local Ollama inference; it does not increase the model's context window.
+
 Ollama renders the OpenAI-compatible messages and tools through each model's chat template. If ordinary model responses are fast but tool-using turns show low prompt cache reuse, diagnose the rendered template before changing saba's context or memory settings. The [Ollama prompt-cache guide](./guides/configure-ollama-prompt-cache.md) explains the log pattern and a tested `llama3.1:8b` workaround.
 
 ### vLLM or Other Local OpenAI-Compatible Server

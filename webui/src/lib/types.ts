@@ -752,6 +752,7 @@ export interface SettingsPayload {
     oauth_expires_at?: number | null;
     oauth_login_supported?: boolean;
     use_proxy?: boolean;
+    ollama_use_gpu?: boolean;
     advanced_fields?: Array<
       | "extra_headers"
       | "extra_body"
@@ -1383,6 +1384,7 @@ export interface ProviderSettingsUpdate {
   apiBase?: string;
   api?: ModelAPIConfig | null;
   use_proxy?: boolean;
+  ollama_gpu?: boolean;
   extraHeaders?: string;
   extraBody?: string;
   extraQuery?: string;

@@ -449,6 +449,7 @@ export function useModelSettingsActions({
           : null;
       if (supportName && !(await installCapabilities([supportName]))) return false;
       const update: ProviderSettingsUpdate = { provider: providerName };
+      if (providerName === "ollama") update.ollama_gpu = providerForm.ollamaUseGpu;
       if (!isOauthProvider) {
         update.apiKey = apiKey || undefined;
         update.apiBase = providerForm.apiBase.trim();
