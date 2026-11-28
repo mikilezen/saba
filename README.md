@@ -1,8 +1,8 @@
 # Saba
 
-**A self-hosted AI assistant you can run, customize, and extend.**
+**An independent, self-hosted AI assistant you can run, customize, and extend.**
 
-Saba brings AI models, tools, memory, files, and messaging channels into one environment you control. Run it locally or on your own server, choose your model provider, and work through the WebUI, terminal, or a connected chat app.
+Saba's Python gateway brings models, tools, memory, files, and messaging channels into one environment you control. Run it locally or on your own server, choose your model provider, and use Saba through the browser, a separate terminal app, or a connected chat platform.
 
 [Features](#what-saba-does) · [Quick Start](#quick-install-with-frozen-dependencies) · [Screens](#webui-screens) · [Documentation](#documentation-and-support) · [GitHub Issues](https://github.com/mikilezen/saba/issues)
 
@@ -25,10 +25,19 @@ Saba brings AI models, tools, memory, files, and messaging channels into one env
 - **Use tools:** Run approved shell, web, MCP, document, and automation tools when enabled.
 - **Remember context:** Keep session history and selected long-term preferences.
 - **Connect channels:** Use the WebUI, Telegram, WhatsApp, and other supported channels.
-- **Follow EBC News:** Look up current stories from the Ethiopian Broadcasting Corporation in English, Amharic, or Afaan Oromo, with links to the original articles.
+- **Ethiopian service workflows:** The separate `saba_et` app supports language-aware public-service discovery over Telegram, with optional voice integrations. See [Ethiopian integrations](./saba_et/README.md).
 - **Use different models:** Configure hosted providers, OpenAI-compatible endpoints, or local model servers.
 - **Automate work:** Create scheduled tasks and longer-running goals.
 - **Develop and extend:** Add skills, plugins, MCP servers, providers, and channel integrations.
+
+## Saba's product work
+
+This repository brings together several substantial parts of the product:
+
+- **Python gateway:** Runs agent turns and owns provider calls, session state, memory, workspace scope, and tool permissions.
+- **Two separate clients:** The React WebUI and TypeScript terminal UI use the same gateway and shared event contracts. See the [terminal UI guide](./tui/README.md).
+- **Extension system:** Provider and channel adapters connect with built-in tools, MCP servers, plugins, and skills.
+- **Ethiopian service assistant:** `saba_et` is a separate, language-aware public-service app with Telegram and optional voice integrations. See [its guide](./saba_et/README.md).
 
 ## What Saba does not do automatically
 
@@ -47,11 +56,47 @@ Saba brings AI models, tools, memory, files, and messaging channels into one env
 4. Saba asks for permission when required, runs the tool, and returns the result to the model.
 5. The model produces a response, which Saba shows in the same conversation.
 
-The model is the reasoning service. Saba is the self-hosted application around it: it manages conversations, permissions, tools, channels, memory, and the user interface.
+The model provides language generation. Saba's Python gateway manages agent execution, conversations, permissions, tools, channels, and memory; the WebUI and terminal UI are separate clients of that same gateway.
 
-<p align="center">
-  <img src="./images/saba_arch.png" alt="Saba architecture: chat channels connect messages to the model, tools, memory, and skills" width="900">
-</p>
+```mermaid
+flowchart LR
+    User((People)) --> WebUI["WebUI<br/>React client"]
+    User --> TUI["Terminal UI<br/>TypeScript client"]
+    User --> ChatApps["Connected chat platforms"]
+
+    WebUI -->|HTTP and WebSocket| API["Python gateway API"]
+    TUI -->|WebSocket and REST| API
+    ChatApps --> Adapters["Channel adapters"] --> Bus["Message bus"]
+
+    subgraph Gateway["Saba Python gateway"]
+        API --> Bus
+        Bus --> Loop["Agent loop"] --> Runner["Agent and tool runner"]
+        Loop <--> State["Sessions, context, and memory"]
+        Runner --> Providers["Model provider adapters"]
+        Runner <--> Tools["Tools and permissions"]
+        Tools --> Extensions["MCP · skills · plugins"]
+    end
+
+    Providers --> Models["Hosted or local models"]
+    WebUI -.-> Contracts["Shared client event contracts"]
+    TUI -.-> Contracts
+
+    subgraph Ethiopia["Saba ET · separate application"]
+        User --> Telegram["Saba ET Telegram bot"] --> ETApp["Public-service assistant"]
+        Voice["Optional voice integrations"] --> ETApp
+        ETApp --> Directory["Provider directory and source lookup"]
+        ETApp --> Queue["Durable webhook queue"]
+        ETApp --> Stores["Profiles · tasks · audit"]
+        Catalog["Curated catalog<br/>data/"] --> Directory
+        ETApp --> Research["Gemini grounding<br/>optional SearchAPI"]
+    end
+    Directory --> Official["Public-service sources"]
+    Research --> Official
+    Queue --> Supabase["Supabase Postgres on Render"]
+    Stores --> Persistence["SQLite locally or Supabase Postgres"]
+```
+
+The WebUI and terminal UI do not contain separate agent runtimes. Both use the Python gateway, which owns execution, session state, tool access, and provider calls. Saba ET is a separate Ethiopia-focused application in this repository.
 
 ## Screens and architecture
 
@@ -246,6 +291,6 @@ docker compose down
 
 Saba is released under the MIT License. See [`LICENSE`](./LICENSE) and preserve upstream copyright and license notices when redistributing changes.
 
-## Built on Nanobot
+## Project foundation
 
-Saba's agent runtime builds on [HKUDS/Nanobot](https://github.com/HKUDS/nanobot), an MIT-licensed open-source project. Saba independently extends that foundation with its own interfaces, integrations, and features; it is not an official Nanobot project.
+Saba is developed and maintained as an independent project. Its agent runtime builds on the MIT-licensed [HKUDS/Nanobot](https://github.com/HKUDS/nanobot) foundation; this repository adds Saba's Python gateway, browser and terminal clients, integrations, extension system, and separate Ethiopia-focused application. Saba is not an official project of the upstream maintainers.
