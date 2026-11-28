@@ -112,6 +112,8 @@ The packaged WebUI is served by the WebSocket channel, not the health endpoint:
 
 WebUI source lives in `webui/`. The production build is written to `saba/web/dist/` and bundled into the wheel.
 
+The React WebUI and the TypeScript terminal UI in `tui/` are separate clients of the same Python gateway; the terminal UI is not part of the WebUI. Both use the shared event contracts in `packages/client-events/`. The Ethiopia-focused `saba_et/` application is a separate service with its own Telegram webhook entrypoint and Render deployment; it does not run inside the general-purpose agent gateway. See the [product architecture diagram](../README.md#how-it-works) and [Ethiopian integrations guide](../saba_et/README.md).
+
 Useful docs:
 
 - [`webui.md`](./webui.md) for the WebUI user guide;
@@ -240,10 +242,5 @@ Choose tests based on the changed surface:
 | Docs | Link checks, command accuracy against CLI/schema, and `git diff --check` |
 
 For user-facing flows, prefer at least one verification path through the public surface the user actually touches: CLI command, HTTP endpoint, WebSocket/WebUI, chat channel, or packaged import.
-<<<<<<< HEAD
-=======
 
-> Keep provider adapters isolated from channel implementations.
-
-> Keep this guidance aligned with the current implementation.
->>>>>>> 6ea44d8 (docs: clarify setup)
+Provider adapters remain isolated from channel implementations. Keep this guide aligned with the current implementation.
