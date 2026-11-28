@@ -237,8 +237,6 @@ Open `http://127.0.0.1:8765`. Stop the services with:
 docker compose down
 ```
 
-- **OpenClaw inspiration and open-source community:** [openclaw/openclaw](https://github.com/openclaw/openclaw)
-
 ## Documentation and support
 
 - [Quick start](./docs/quick-start.md) · [Configuration](./docs/configuration.md) · [Providers](./docs/providers.md)
