@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Check, Loader2, Phone } from "lucide-react";
 
-import { ChannelLogo } from "@/components/settings/channels/ChannelIdentity";
+import { ChannelLogoView } from "@/components/settings/channels/ChannelLogoView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +17,7 @@ type PhoneSetup = {
 
 export function ComingSoonPhonePanel({
   feature,
+  presentation,
   showBrandLogos,
 }: ChannelPluginPanelProps) {
   const storageKey = `saba-phone-channel:${feature.name}`;
@@ -60,7 +61,7 @@ export function ComingSoonPhonePanel({
   return (
     <aside className="min-h-full rounded-panel bg-settings-surface p-6">
       <div className="flex items-center gap-3 pe-20">
-        <ChannelLogo feature={feature} showBrandLogos={showBrandLogos} />
+        <ChannelLogoView feature={feature} presentation={presentation} showBrandLogos={showBrandLogos} />
         <h3 className="text-ui-heading">{feature.display_name}</h3>
       </div>
       <div className="mt-5 space-y-5">

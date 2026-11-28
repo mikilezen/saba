@@ -93,6 +93,7 @@ export function ChannelSetupPanel({
           connectRequestId={connectRequestId}
           token={token}
           feature={feature}
+          presentation={uiContribution.presentation}
           actionKey={actionKey}
           showBrandLogos={showBrandLogos}
           onAction={onAction}

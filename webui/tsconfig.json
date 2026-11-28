@@ -22,13 +22,6 @@
     "allowSyntheticDefaultImports": true,
 
     "types": ["node"],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/vite",
-      "./node_modules/vitest",
-      "./node_modules/@testing-library"
-    ],
-
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],

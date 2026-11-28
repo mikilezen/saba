@@ -21,6 +21,7 @@ export type ChannelPluginPanelProps = {
   connectRequestId?: number;
   token: string;
   feature: SabaFeatureInfo;
+  presentation?: ChannelPresentation;
   actionKey: string | null;
   showBrandLogos: boolean;
   onAction: ChannelFeatureAction;
