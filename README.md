@@ -1,8 +1,10 @@
-# Saba AI — Your Self-Hosted AI Assistant
+# Saba
 
-Bring your AI models, tools, and chat channels together in one self-hosted assistant. Run Saba on your own computer or server, then use a browser, terminal, or connected chat app to work with files, keep conversation context, and automate recurring tasks.
+**A self-hosted AI assistant you can run, customize, and extend.**
 
-Saba is a Python AI agent gateway with a WebUI and terminal interface. You choose the model provider, workspace access, enabled tools, and channel connections.
+Saba brings AI models, tools, memory, files, and messaging channels into one environment you control. Run it locally or on your own server, choose your model provider, and work through the WebUI, terminal, or a connected chat app.
+
+[Features](#what-saba-does) · [Quick Start](#quick-install-with-frozen-dependencies) · [Screens](#webui-screens) · [Documentation](#documentation-and-support) · [GitHub Issues](https://github.com/mikilezen/saba/issues)
 
 <p align="center">
   <img src="./images/logo.png" alt="Saba AI" width="380">
@@ -11,6 +13,10 @@ Saba is a Python AI agent gateway with a WebUI and terminal interface. You choos
 <p align="center">
   <img src="./images/saba_mascot.png" alt="Saba mascot" width="140">
 </p> -->
+
+<p align="center">
+  <img src="./images/screens/webui-new-chat.png" alt="Saba WebUI chat workspace" width="900">
+</p>
 
 ## What Saba does
 
@@ -43,19 +49,15 @@ Saba is a Python AI agent gateway with a WebUI and terminal interface. You choos
 
 The model is the reasoning service. Saba is the self-hosted application around it: it manages conversations, permissions, tools, channels, memory, and the user interface.
 
+<p align="center">
+  <img src="./images/saba_arch.png" alt="Saba architecture: chat channels connect messages to the model, tools, memory, and skills" width="900">
+</p>
+
 ## Screens and architecture
 
 The WebUI includes a chat workspace, channel management, plugin and tool management, skills, and controlled workspace access.
 
 ## WebUI screens
-
-### Start a conversation
-
-The home screen lets you start a topic, choose a workspace and model, attach files, and select the access level for the task.
-
-<p align="center">
-  <img src="./images/screens/webui-new-chat.png" alt="Saba WebUI new chat screen" width="900">
-</p>
 
 ### Manage channels
 
@@ -245,3 +247,7 @@ docker compose down
 - [Report a bug](https://github.com/mikilezen/saba/issues/new?template=bug_report.yml)
 
 Saba is released under the MIT License. See [`LICENSE`](./LICENSE) and preserve upstream copyright and license notices when redistributing changes.
+
+## Built on Nanobot
+
+Saba's agent runtime builds on [HKUDS/Nanobot](https://github.com/HKUDS/nanobot), an MIT-licensed open-source project. Saba independently extends that foundation with its own interfaces, integrations, and features; it is not an official Nanobot project.
